@@ -12,7 +12,7 @@ export default function ClientsPreview() {
   const [open, setOpen] = useState(false);
 
   return (
-    <section className="relative z-10 py-20 bg-white/60 backdrop-blur-sm">
+    <section className="relative z-10 py-20 bg-white/60 backdrop-blur-sm" id="#projects">
       <div className="max-w-6xl mx-auto px-4 text-center">
         <h2 className="text-3xl md:text-4xl font-bold mb-4">
           We Craft Top Rated Businesses On Ecommerce

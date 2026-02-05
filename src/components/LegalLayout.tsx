@@ -12,7 +12,7 @@ export default function LegalLayout({
   return (
     <main className="relative z-10 bg-linear-to-b from-gray-50 to-white min-h-screen">
       {/* Hero Section */}
-      <div className="bg-linear-to-br from-green-600 to-green-700 text-white">
+      <div className="bg-linear-to-br from-green-600 to-green-700 text-white pt-8">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16 md:py-24">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
             {title}
