@@ -127,31 +127,6 @@ export function Clients() {
             />
           </div>
         </div>
-
-        {/* Dark Card - Competitors Section */}
-        <SlideUp delay={0.3}>
-          <div className="bg-[#1a1a1a] rounded-3xl p-8 md:p-12">
-            <h3 className="text-2xl md:text-3xl font-bold text-white italic mb-4 leading-tight">
-              Your Competitors Follow
-              <br />
-              What We Create.
-            </h3>
-            <p className="text-[#a0a0a0] text-base md:text-lg leading-relaxed max-w-3xl mb-6">
-              At Ecomsavy, we don't just deliver results—we've helped shape the
-              strategies of other agencies by sharing the proven systems behind
-              our client success.
-            </p>
-            <div className="flex justify-end">
-              <Button
-                size="lg"
-                className="bg-[#22a852] hover:bg-[#1e9648] text-white px-6 py-3 rounded-lg font-medium"
-                aria-label="View our success stories"
-              >
-                See The Success
-              </Button>
-            </div>
-          </div>
-        </SlideUp>
       </div>
     </section>
   )

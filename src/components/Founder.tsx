@@ -20,10 +20,10 @@ export function Founder() {
           <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 shrink-0">
             <div className="w-full h-full rounded-full overflow-hidden bg-[#e8e8e8]">
               <Image
-                src="/images/founder.png"
+                src="/images/founder.jpg"
                 alt="Syed Maaz Ali - Founder and CEO of Ecomsavy"
                 fill
-                className="object-cover object-top"
+                className="object-cover object-top rounded-full"
                 priority
               />
             </div>
@@ -42,21 +42,24 @@ export function Founder() {
             {/* Social Icons */}
             <div className="flex items-center gap-3">
               <a
-                href="#"
+                href="https://www.instagram.com/syedmaazali_official/#"
+                target="_blank"
                 aria-label="LinkedIn"
                 className="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center hover:bg-white/30 transition-colors"
               >
                 <Linkedin className="w-5 h-5 text-white" />
               </a>
               <a
-                href="#"
+                href="https://www.facebook.com/people/Syed-Maaz-Ali/61576235527531/"
+                target="_blank"
                 aria-label="Facebook"
                 className="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center hover:bg-white/30 transition-colors"
               >
                 <Facebook className="w-5 h-5 text-white" />
               </a>
               <a
-                href="#"
+                href="https://www.instagram.com/syedmaazali_official/#"
+                target="_blank"
                 aria-label="Instagram"
                 className="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center hover:bg-white/30 transition-colors"
               >

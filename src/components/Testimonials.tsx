@@ -61,7 +61,7 @@ const StarRating = ({ rating }: { rating: number }) => {
 
 export default function Testimonials() {
   return (
-    <section className="w-full bg-background py-16 md:py-24 px-4 sm:px-6 lg:px-8" id="testimonials">
+    <section className="w-full bg-white/60 backdrop-blur-sm py-16 md:py-24 px-4 sm:px-6 lg:px-8" id="testimonials">
       <div className="max-w-7xl mx-auto">
         {/* Heading */}
         <FadeUp className="text-center mb-12 md:mb-16">

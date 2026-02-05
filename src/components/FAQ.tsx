@@ -6,6 +6,7 @@ import * as AccordionPrimitive from "@radix-ui/react-accordion"
 import { Minus, Plus } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { FadeUp, SlideUp } from './AnimatedSection'
+import Image from "next/image"
 
 const faqData = [
   {
@@ -16,22 +17,22 @@ const faqData = [
   {
     question: "How soon can I expect results after onboarding?",
     answer:
-      "Most clients start seeing measurable improvements within 2-4 weeks of implementation. Our data-driven approach ensures we're constantly optimizing for better performance.",
+      "Results begin within the first 30–45 days, depending on your category and product readiness.",
   },
   {
     question: "Is Ecomsavy only for big brands?",
     answer:
-      "Not at all! We work with businesses of all sizes, from startups to established enterprises. Our strategies are tailored to fit your specific needs and budget.",
+      "Not at all. We work with startups, SMEs, and large-scale brands — our approach adapts to your business size.",
   },
   {
     question: "What if I've never sold online before?",
     answer:
-      "We've helped many first-time sellers launch successfully. Our team provides end-to-end support, from store setup to your first sales and beyond.",
+      "No problem. We guide you through every step — from product setup to your first sale and beyond.",
   },
   {
     question: "How do I get started with Ecomsavy?",
     answer:
-      "Simply reach out through our contact form or schedule a free consultation. We'll discuss your goals, analyze your current situation, and create a customized plan for your success.",
+      "Just reach out via our contact form — our team will get in touch to discuss your business and next steps.",
   },
 ]
 
@@ -173,10 +174,10 @@ function FAQIllustration() {
 export default function FAQ() {
   return (
     <section className="bg-[#f5f5f5] py-16 md:py-24" id="faq">
-      <div className="container mx-auto px-6">
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
+      <div className="container mx-auto px-6 ">
+        <div className="flex justify-center items-center gap-12 lg:gap-16 ">
           {/* Left content */}
-          <FadeUp>
+          <FadeUp className="max-w-[40%]">
             <h2 className="text-balance text-4xl font-bold tracking-tight text-foreground md:text-5xl">
               Direct Answers
               <br />
@@ -199,7 +200,7 @@ export default function FAQ() {
                   value={`item-${index}`}
                   className="border-t border-border"
                 >
-                  <FAQAccordionTrigger>{item.question}</FAQAccordionTrigger>
+                  <FAQAccordionTrigger className="cursor-pointer">{item.question}</FAQAccordionTrigger>
                   <FAQAccordionContent>{item.answer}</FAQAccordionContent>
                 </AccordionPrimitive.Item>
               ))}
@@ -208,8 +209,9 @@ export default function FAQ() {
           </FadeUp>
 
           {/* Right illustration */}
-          <SlideUp delay={0.2} className="flex items-center justify-center lg:justify-end">
-            <FAQIllustration />
+          <SlideUp delay={0.2} className="flex items-center justify-center">
+            {/* <FAQIllustration /> */}
+            <Image src={'/images/Frame.svg'} alt="FAQ" width={300} height={600}/>
           </SlideUp>
         </div>
       </div>

@@ -50,7 +50,7 @@ export default function ServiceShowcase() {
   const currentService = services.find((s) => s.id === activeService);
 
   return (
-    <section className="min-h-screen bg-background py-12 md:py-20 px-4 sm:px-6 lg:px-8" id="services">
+    <section className="min-h-screen bg-white/60 backdrop-blur-sm py-12 md:py-20 px-4 sm:px-6 lg:px-8" id="services">
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <FadeUp className="text-center mb-12 md:mb-16 flex justify-center items-center flex-col">
@@ -64,7 +64,7 @@ export default function ServiceShowcase() {
         </FadeUp>
 
         {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 justify-center items-center">
           {/* Left Sidebar */}
           <div className="lg:col-span-1">
             <nav className="flex flex-col gap-6 md:gap-8" aria-label="Services navigation">
@@ -72,7 +72,7 @@ export default function ServiceShowcase() {
                 <button
                   key={service.id}
                   onClick={() => setActiveService(service.id)}
-                  className={`text-left pb-4 border-b-2 transition-all duration-300 font-medium text-lg md:text-xl ${
+                  className={`text-left pb-4 border-b-2 transition-all duration-300 font-medium text-lg md:text-xl cursor-pointer ${
                     activeService === service.id
                       ? 'text-foreground border-b-teal-500'
                       : 'text-muted-foreground border-b-transparent hover:text-foreground'
