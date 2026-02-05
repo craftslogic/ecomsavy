@@ -32,7 +32,7 @@ export function FadeUp({ children, className = '', delay = 0 }: AnimatedSectionP
   const transition = useMemo(() => ({
     duration: 0.6,
     delay,
-    ease: [0.25, 0.4, 0.25, 1]
+    ease: [0.25, 0.4, 0.25, 1] as const
   }), [delay])
 
   return (
@@ -57,7 +57,7 @@ export function SlideUp({ children, className = '', delay = 0 }: AnimatedSection
   const transition = useMemo(() => ({
     duration: 0.5,
     delay,
-    ease: 'easeOut'
+    ease: 'easeOut' as const
   }), [delay])
 
   return (
