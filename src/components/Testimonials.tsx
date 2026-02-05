@@ -1,7 +1,8 @@
 'use client';
 
-import Image from 'next/image';
 import { FadeUp } from './AnimatedSection';
+import YouTubeEmbed from './YouTubeEmbed';
+import { videoConfig } from '@/config/videos';
 
 interface Testimonial {
   id: string;
@@ -9,7 +10,7 @@ interface Testimonial {
   company: string;
   rating: number;
   testimonial: string;
-  videoThumbnail?: string;
+  videoId: string; // YouTube video ID
 }
 
 const testimonials: Testimonial[] = [
@@ -19,7 +20,7 @@ const testimonials: Testimonial[] = [
     company: 'From Tabbanis',
     rating: 5,
     testimonial: 'We went from 10 orders a week to 100+ in under 2 months. Honestly, I didn\'t expect results this fast.',
-    videoThumbnail: '/images/image.png',
+    videoId: videoConfig.testimonials[0].videoId,
   },
   {
     id: '2',
@@ -27,7 +28,7 @@ const testimonials: Testimonial[] = [
     company: 'From Seven Edge',
     rating: 5,
     testimonial: 'Since joining Ecomsavy, we\'ve added two fresh categories and now profit on Daraz.',
-    videoThumbnail: '/images/image.png',
+    videoId: videoConfig.testimonials[1].videoId,
   },
   {
     id: '3',
@@ -35,7 +36,7 @@ const testimonials: Testimonial[] = [
     company: 'From Hype Pillow',
     rating: 5,
     testimonial: 'We crossed 1M in sales way faster than I thought. If I had found them earlier, I\'d be way ahead by now.',
-    videoThumbnail: '/images/image.png',
+    videoId: videoConfig.testimonials[2].videoId,
   },
   {
     id: '4',
@@ -43,7 +44,7 @@ const testimonials: Testimonial[] = [
     company: 'From Paper Cut',
     rating: 5,
     testimonial: 'I used to struggle with product visibility. Now, we\'re ranking on top keywords and getting daily sales.',
-    videoThumbnail: '/images/image.png',
+    videoId: videoConfig.testimonials[3].videoId,
   },
 ];
 
@@ -77,28 +78,13 @@ export default function Testimonials() {
               key={testimonial.id}
               className="bg-card rounded-2xl overflow-hidden border border-border shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col h-full"
             >
-              {/* Video Placeholder */}
-              <div className="relative w-full aspect-video bg-muted overflow-hidden">
-                {testimonial.videoThumbnail && (
-                  <Image
-                    src={testimonial.videoThumbnail || "/placeholder.svg"}
-                    alt={`${testimonial.name} testimonial`}
-                    fill
-                    className="object-cover"
-                  />
-                )}
-                {/* Play Button Overlay */}
-                <div className="absolute inset-0 flex items-center justify-center bg-black/20 hover:bg-black/30 transition-colors cursor-pointer">
-                  <button className="w-12 h-12 rounded-full bg-white/80 hover:bg-white flex items-center justify-center transition-colors">
-                    <svg
-                      className="w-6 h-6 text-black fill-current ml-0.5"
-                      viewBox="0 0 24 24"
-                    >
-                      <polygon points="5 3 19 12 5 21" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
+              {/* YouTube Video Player */}
+              <YouTubeEmbed
+                videoId={testimonial.videoId}
+                title={`${testimonial.name} testimonial`}
+                aspectRatio="video"
+                className="border-b border-border"
+              />
 
               {/* Content */}
               <div className="flex flex-col grow p-5 sm:p-6">

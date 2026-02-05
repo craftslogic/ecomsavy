@@ -3,7 +3,10 @@
 import { useEffect, useRef } from "react";
 import { FadeUp, SlideUp } from "./AnimatedSection";
 import Image from "next/image";
+import YouTubeEmbed from "./YouTubeEmbed";
+import { videoConfig } from "@/config/videos";
 
+// Replace with your actual YouTube video ID
 const brands = [
   1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
   23, 24, 25, 26, 27, 28, 29, 30,
@@ -54,23 +57,15 @@ export default function HeroSection() {
           </h1>
         </FadeUp>
 
-        {/* Video Player - Elevated above particles */}
+        {/* Video Player - Click-to-play YouTube embed */}
         <SlideUp delay={0.2}>
-          <div className="relative mb-16 rounded-2xl overflow-hidden bg-black aspect-video shadow-lg">
-             <video
-              width="100%"
-              height="100%"
-              src="/videos/hero.mp4"
-              title="How to Build a Profitable Ecommerce Store"
-              controls
-              className="w-full h-full"
-              aria-label="Video tutorial: How to Build a Profitable Ecommerce Store"
-              preload="none"
-              playsInline
-            >
-              <track kind="captions" srcLang="en" label="English" />
-              Your browser does not support the video tag. Please use a modern browser to view this content.
-            </video>
+          <div className="mb-16 rounded-2xl overflow-hidden shadow-lg">
+            <YouTubeEmbed
+              videoId={videoConfig.hero.videoId}
+              title={videoConfig.hero.title}
+              posterImage={videoConfig.hero.posterImage}
+              aspectRatio="video"
+            />
           </div>
         </SlideUp>
 
