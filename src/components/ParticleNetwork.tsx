@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface Particle {
   x: number;
@@ -16,17 +16,31 @@ export function ParticleNetwork() {
   const mouseRef = useRef({ x: -9999, y: -9999 });
   const rafRef = useRef<number>(0);
   const resizeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
+    // Defer initialization to avoid blocking initial render
+    const initTimer = setTimeout(() => {
+      setIsReady(true);
+    }, 100);
+
+    return () => clearTimeout(initTimer);
+  }, []);
+
+  useEffect(() => {
+    if (!isReady) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
-    const PARTICLE_COUNT = 220;
-    const CONNECTION_DISTANCE = 180;
-    const MOUSE_DISTANCE = 140;
+    // Reduce particle count on mobile for better performance
+    const isMobile = window.innerWidth < 768;
+    const PARTICLE_COUNT = isMobile ? 80 : 220;
+    const CONNECTION_DISTANCE = isMobile ? 120 : 180;
+    const MOUSE_DISTANCE = isMobile ? 100 : 140;
 
     const resize = () => {
       const dpr = window.devicePixelRatio || 1;
@@ -157,7 +171,9 @@ export function ParticleNetwork() {
         clearTimeout(resizeTimeoutRef.current);
       }
     };
-  }, []);
+  }, [isReady]);
+
+  if (!isReady) return null;
 
   return (
     <canvas

@@ -45,14 +45,14 @@ function FAQAccordionTrigger({
     <AccordionPrimitive.Header className="flex">
       <AccordionPrimitive.Trigger
         className={cn(
-          "flex flex-1 items-center justify-between gap-4 py-5 text-left text-base font-semibold transition-all outline-none [&[data-state=open]_.plus-icon]:hidden [&[data-state=closed]_.minus-icon]:hidden",
+          "flex flex-1 items-center justify-between gap-4 py-4 md:py-5 text-left text-base font-semibold transition-all outline-none touch-manipulation [&[data-state=open]_.plus-icon]:hidden [&[data-state=closed]_.minus-icon]:hidden",
           className
         )}
         {...props}
       >
         {children}
-        <Plus className="plus-icon size-5 shrink-0 text-foreground" />
-        <Minus className="minus-icon size-5 shrink-0 text-foreground" />
+        <Plus className="plus-icon size-5 md:size-6 shrink-0 text-foreground" />
+        <Minus className="minus-icon size-5 md:size-6 shrink-0 text-foreground" />
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
   )
@@ -174,16 +174,16 @@ function FAQIllustration() {
 export default function FAQ() {
   return (
     <section className="bg-[#f5f5f5] py-16 md:py-24" id="faq">
-      <div className="container mx-auto px-6 ">
-        <div className="flex justify-center items-center gap-12 lg:gap-16 ">
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="flex flex-col lg:flex-row justify-center items-start lg:items-center gap-8 md:gap-12 lg:gap-16">
           {/* Left content */}
-          <FadeUp className="max-w-[40%]">
-            <h2 className="text-balance text-4xl font-bold tracking-tight text-foreground md:text-5xl">
+          <FadeUp className="w-full lg:max-w-[45%]">
+            <h2 className="text-balance text-3xl md:text-4xl font-bold tracking-tight text-foreground lg:text-5xl">
               Direct Answers
               <br />
               to Significant Questions
             </h2>
-            <p className="mt-4 max-w-lg text-muted-foreground">
+            <p className="mt-4 text-sm md:text-base max-w-lg text-muted-foreground">
               Providing straightforward solutions to complex challenges, ensuring
               clarity and confidence in every decision you make.
             </p>
@@ -192,7 +192,7 @@ export default function FAQ() {
               type="single"
               defaultValue="item-0"
               collapsible
-              className="mt-10"
+              className="mt-8 md:mt-10"
             >
               {faqData.map((item, index) => (
                 <AccordionPrimitive.Item
@@ -200,8 +200,8 @@ export default function FAQ() {
                   value={`item-${index}`}
                   className="border-t border-border"
                 >
-                  <FAQAccordionTrigger className="cursor-pointer">{item.question}</FAQAccordionTrigger>
-                  <FAQAccordionContent>{item.answer}</FAQAccordionContent>
+                  <FAQAccordionTrigger className="cursor-pointer text-sm md:text-base">{item.question}</FAQAccordionTrigger>
+                  <FAQAccordionContent className="text-sm md:text-base">{item.answer}</FAQAccordionContent>
                 </AccordionPrimitive.Item>
               ))}
               <div className="border-t border-border" />
@@ -209,9 +209,8 @@ export default function FAQ() {
           </FadeUp>
 
           {/* Right illustration */}
-          <SlideUp delay={0.2} className="flex items-center justify-center">
-            {/* <FAQIllustration /> */}
-            <Image src={'/images/Frame.svg'} alt="FAQ" width={300} height={600}/>
+          <SlideUp delay={0.2} className="hidden lg:flex items-center justify-center lg:max-w-[40%]">
+            <Image src={'/images/Frame.svg'} alt="FAQ" width={300} height={600} className="w-full h-auto"/>
           </SlideUp>
         </div>
       </div>

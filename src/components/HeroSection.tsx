@@ -39,7 +39,7 @@ export default function HeroSection() {
 
   return (
     <section
-      className="relative w-full bg-white/60 backdrop-blur-sm py-16 px-4 md:py-24"
+      className="relative w-full bg-white/60 backdrop-blur-sm pt-24 md:pt-16 pb-16 md:pb-24 px-4"
       id="home"
       aria-labelledby="hero-heading"
     >
@@ -57,7 +57,7 @@ export default function HeroSection() {
         {/* Video Player - Elevated above particles */}
         <SlideUp delay={0.2}>
           <div className="relative mb-16 rounded-2xl overflow-hidden bg-black aspect-video shadow-lg">
-            <video
+             <video
               width="100%"
               height="100%"
               src="/videos/hero.mp4"
@@ -65,7 +65,8 @@ export default function HeroSection() {
               controls
               className="w-full h-full"
               aria-label="Video tutorial: How to Build a Profitable Ecommerce Store"
-              preload="metadata"
+              preload="none"
+              playsInline
             >
               <track kind="captions" srcLang="en" label="English" />
               Your browser does not support the video tag. Please use a modern browser to view this content.

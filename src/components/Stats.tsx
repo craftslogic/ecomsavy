@@ -133,7 +133,7 @@ export function Stats() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 w-full max-w-7xl">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 w-full max-w-7xl">
         {stats.map((stat, index) => (
           <div
             key={index}

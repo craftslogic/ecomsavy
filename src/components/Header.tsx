@@ -2,6 +2,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"
+import { cn } from "@/lib/utils"
 
 const navLinks = [
   { href: "#", label: "Home" },
@@ -24,7 +25,7 @@ export default function Header() {
       >
         <Link href="/" className="flex items-center shrink-0" aria-label="Ecomsavy home">
           <Image
-            src="/images/logo.png"
+            src="/images/logo.svg"
             alt="Ecomsavy logo"
             width={140}
             height={140}
@@ -55,12 +56,15 @@ export default function Header() {
 
       {/* Mobile: fixed top, hamburger menu */}
       <nav
-        className="md:hidden fixed top-0 left-0 right-0 flex items-center justify-between px-4 py-3 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow z-50"
+        className={cn(
+          "md:hidden fixed top-0 left-0 right-0 flex items-center justify-between px-4 py-3 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow transition-all",
+          menuOpen ? "z-60" : "z-50"
+        )}
         aria-label="Mobile navigation"
       >
         <Link href="/" className="flex items-center shrink-0" aria-label="Ecomsavy home">
           <Image
-            src="/images/logo.png"
+            src="/images/logo.svg"
             alt="Ecomsavy logo"
             width={110}
             height={110}
@@ -68,7 +72,10 @@ export default function Header() {
           />
         </Link>
         <button
-          className="inline-flex items-center justify-center p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600"
+          className={cn(
+            "inline-flex items-center justify-center p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-green-600 transition-all",
+            menuOpen && "bg-gray-100"
+          )}
           aria-label={menuOpen ? "Close menu" : "Open menu"}
           aria-expanded={menuOpen}
           onClick={() => setMenuOpen((v) => !v)}
