@@ -123,12 +123,12 @@ export default function Header() {
                 </Link>
               ))}
               <Link
-                href="/contact-us"
+                href="/schedule-a-meet"
                 className="w-full max-w-xs px-6 py-3 bg-green-600 text-white text-base font-semibold rounded-full hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors flex items-center justify-center gap-2 mt-4"
-                aria-label="Contact us to work together"
+                aria-label="Schedule a meet"
                 onClick={() => setMenuOpen(false)}
               >
-                Contact
+                Schedule a Meet
                 <span aria-hidden="true">→</span>
               </Link>
             </div>
