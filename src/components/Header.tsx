@@ -44,11 +44,11 @@ export default function Header() {
           ))}
         </div>
         <Link
-          href="/contact-us"
+          href="/schedule-a-meet"
           className="px-4 md:px-6 xl:px-8 py-2 md:py-3 bg-green-600 text-white text-sm md:text-base font-semibold rounded-full hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 flex items-center gap-2 shrink-0"
           aria-label="Contact us to work together"
         >
-          <span className="inline">Let's Work Together</span>
+          <span className="inline">Schedule a Meet</span>
          
         </Link>
       </nav>

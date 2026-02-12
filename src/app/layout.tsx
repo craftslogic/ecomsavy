@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { ParticleNetwork } from "@/components/ParticleNetwork";
+import { Toaster } from "sonner";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -94,6 +95,9 @@ export default function RootLayout({
           {children}
           <Footer />
         </div>
+
+        {/* Toast Notifications */}
+        <Toaster position="top-right" richColors />
       </body>
     </html>
   );

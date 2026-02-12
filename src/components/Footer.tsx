@@ -57,11 +57,11 @@ export default function Footer() {
 
         {/* CTA Button */}
         <Link
-          href="/contact-us"
+          href="/schedule-a-meet"
           className="px-8 py-3 rounded-full font-semibold text-white bg-[#2d9d5c] hover:bg-[#22a852] transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2"
           aria-label="Contact us to work together on your ecommerce business"
         >
-          Let's Work Together
+          Schedule a Meet
         </Link>
 
         {/* Social Media Icons */}
@@ -142,7 +142,7 @@ export default function Footer() {
 
         {/* Copyright */}
         <p className="text-sm text-gray-500">
-          © Copyright {currentYear} Ecomsavy – All Rights Reserved.
+          © Copyright {currentYear} Ecomsavy – All Rights Reserved. Designed and Developed by <a href="https://muzzamilbukhari-portfolio.vercel.app" target="_blank" rel="noopener noreferrer">Muzzamil Bukhari</a>
         </p>
       </div>
     </footer>
