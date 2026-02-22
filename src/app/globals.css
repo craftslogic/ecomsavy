@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "react-day-picker/style.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -145,4 +146,38 @@
   .will-change-transform-opacity {
     will-change: transform, opacity;
   }
+}
+
+/* React Day Picker Custom Styling */
+.rdp-custom {
+  --rdp-cell-size: 40px;
+  --rdp-accent-color: oklch(0.488 0.243 264.376);
+  --rdp-background-color: oklch(0.97 0 0);
+  --rdp-accent-color-dark: oklch(0.488 0.243 264.376);
+  --rdp-background-color-dark: oklch(0.269 0 0);
+  --rdp-outline: 2px solid var(--rdp-accent-color);
+  --rdp-outline-selected: 2px solid var(--rdp-accent-color);
+}
+
+.rdp-custom .rdp-day_selected:not([disabled]) {
+  font-weight: 600;
+  background-color: oklch(0.488 0.243 264.376);
+  color: white;
+}
+
+.rdp-custom .rdp-day_selected:hover:not([disabled]) {
+  background-color: oklch(0.388 0.243 264.376);
+}
+
+.dark .rdp-custom .rdp-day_selected:not([disabled]) {
+  background-color: oklch(0.488 0.243 264.376);
+  color: white;
+}
+
+.rdp-custom .rdp-button:hover:not([disabled]):not(.rdp-day_selected) {
+  background-color: oklch(0.97 0 0);
+}
+
+.dark .rdp-custom .rdp-button:hover:not([disabled]):not(.rdp-day_selected) {
+  background-color: oklch(0.269 0 0);
 }

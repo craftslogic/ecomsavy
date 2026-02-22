@@ -162,7 +162,7 @@ export default function ScheduleAMeetPage() {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 py-12 px-4">
+    <div className="min-h-screen bg-white/60 dark:bg-gray-900/60 backdrop-blur-sm py-12 px-4">
       <div className="container mx-auto">
         {/* Progress Indicator */}
         {currentStep < 4 && (
