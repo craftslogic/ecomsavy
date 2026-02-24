@@ -15,6 +15,8 @@ npm install @supabase/supabase-js googleapis resend
 - [ ] Create new project (wait for provisioning ~2 minutes)
 - [ ] Note down project URL
 
+
+
 ### 2.2 Run Database Schema
 - [ ] Open Supabase dashboard > SQL Editor
 - [ ] Copy entire content from `SUPABASE_SCHEMA.sql`

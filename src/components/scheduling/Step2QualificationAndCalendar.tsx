@@ -284,6 +284,13 @@ export function Step2QualificationAndCalendar({
           {errors.investment_ready && (
             <p className="mt-2 text-sm text-red-500">{errors.investment_ready.message}</p>
           )}
+          {selectedValues.investment_ready === 'no' && (
+            <div className="mt-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 border-2 border-yellow-300 dark:border-yellow-700 rounded-lg">
+              <p className="text-yellow-800 dark:text-yellow-300 font-medium">
+                Thanks for your interest. Ecomsavy brand launches require investment. We&apos;ll keep you posted when no-investment offers are available.
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Question 3: Category Interest */}
@@ -494,7 +501,7 @@ export function Step2QualificationAndCalendar({
           </Button>
           <Button
             type="submit"
-            disabled={isSubmitting || !selectedSlot}
+            disabled={isSubmitting || !selectedSlot || selectedValues.investment_ready === 'no'}
             className="flex-1 py-3 text-base font-semibold"
           >
             {isSubmitting ? 'Confirming...' : 'Confirm Meeting'}
