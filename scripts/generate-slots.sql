@@ -15,20 +15,25 @@ BEGIN
         -- Only add slots for weekdays (Monday = 1, Friday = 5)
         IF EXTRACT(DOW FROM v_date) BETWEEN 1 AND 5 THEN
             
-            -- Morning Slots (9:00 AM - 12:00 PM)
+            -- Morning Slots (10:00 AM - 1:00 PM)
             INSERT INTO available_slots (slot_date, start_time, end_time)
             VALUES
-                (v_date, '09:00:00', '10:00:00'),
-                (v_date, '10:00:00', '11:00:00'),
-                (v_date, '11:00:00', '12:00:00')
+                (v_date, '10:00:00', '10:30:00'),
+                (v_date, '10:30:00', '11:00:00'),
+                (v_date, '11:00:00', '11:30:00'),
+                (v_date, '11:30:00', '12:00:00'),
+                (v_date, '12:00:00', '12:30:00'),
+                (v_date, '12:30:00', '13:00:00')
             ON CONFLICT (slot_date, start_time) DO NOTHING;
             
-            -- Afternoon Slots (2:00 PM - 5:00 PM)
+            -- Afternoon Slots (2:00 PM - 4:30 PM) - Break from 1:00 PM to 2:00 PM
             INSERT INTO available_slots (slot_date, start_time, end_time)
             VALUES
-                (v_date, '14:00:00', '15:00:00'),
-                (v_date, '15:00:00', '16:00:00'),
-                (v_date, '16:00:00', '17:00:00')
+                (v_date, '14:00:00', '14:30:00'),
+                (v_date, '14:30:00', '15:00:00'),
+                (v_date, '15:00:00', '15:30:00'),
+                (v_date, '15:30:00', '16:00:00'),
+                (v_date, '16:00:00', '16:30:00')
             ON CONFLICT (slot_date, start_time) DO NOTHING;
             
         END IF;

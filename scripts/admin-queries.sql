@@ -215,7 +215,6 @@ SELECT
     l.created_at as lead_created,
     qr.business_timeline,
     qr.investment_ready,
-    qr.seen_elyscents,
     qr.category_interest,
     qr.created_at as qualification_completed,
     bm.meeting_date,

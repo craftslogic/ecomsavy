@@ -6,8 +6,7 @@ const qualificationInputSchema = z.object({
   lead_id: z.string().uuid(),
   business_timeline: z.enum(['now', 'later', 'never']),
   investment_ready: z.boolean(),
-  seen_elyscents: z.boolean(),
-  category_interest: z.enum(['perfume', 'beard_oil', 'pain_relief_oils']),
+  category_interest: z.enum(['skincare', 'perfume', 'gadgets']),
 });
 
 /**
@@ -31,7 +30,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { lead_id, business_timeline, investment_ready, seen_elyscents, category_interest } =
+    const { lead_id, business_timeline, investment_ready, category_interest } =
       validationResult.data;
 
     // Check if lead exists
@@ -57,7 +56,6 @@ export async function POST(request: NextRequest) {
             lead_id,
             business_timeline,
             investment_ready,
-            seen_elyscents,
             category_interest,
           },
         ],

@@ -14,8 +14,7 @@ export interface QualificationResponse {
   lead_id: string;
   business_timeline: 'now' | 'later' | 'never';
   investment_ready: boolean;
-  seen_elyscents: boolean;
-  category_interest: 'perfume' | 'beard_oil' | 'pain_relief_oils';
+  category_interest: 'skincare' | 'perfume' | 'gadgets';
   created_at: string;
 }
 
@@ -54,8 +53,16 @@ export interface LeadCaptureFormData {
 export interface QualificationFormData {
   business_timeline: 'now' | 'later' | 'never';
   investment_ready: 'yes' | 'no';
-  seen_elyscents: 'yes' | 'no';
-  category_interest: 'perfume' | 'beard_oil' | 'pain_relief_oils';
+  category_interest: 'skincare' | 'perfume' | 'gadgets';
+}
+
+export interface QualificationWithContactFormData {
+  full_name: string;
+  email: string;
+  phone: string;
+  business_timeline: 'now' | 'later' | 'never';
+  investment_ready: 'yes' | 'no';
+  category_interest: 'skincare' | 'perfume' | 'gadgets';
 }
 
 export interface SlotSelectionFormData {

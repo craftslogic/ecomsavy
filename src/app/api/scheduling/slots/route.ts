@@ -4,7 +4,7 @@ import { addDays, startOfDay } from 'date-fns';
 
 /**
  * GET /api/scheduling/slots
- * Fetch all available (not booked, active, future) time slots
+ * Fetch all available (active, future) time slots - including booked ones
  * Supports date filtering via ?date=YYYY-MM-DD query parameter
  */
 export async function GET(request: NextRequest) {
@@ -12,11 +12,10 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const dateParam = searchParams.get('date');
 
-    // Start building the query
+    // Start building the query - remove is_booked filter to show all slots
     let query = supabase
       .from('available_slots')
       .select('*')
-      .eq('is_booked', false)
       .eq('is_active', true)
       .order('slot_date', { ascending: true })
       .order('start_time', { ascending: true });

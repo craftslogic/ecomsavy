@@ -44,9 +44,9 @@ export function Step2Qualification({ onNext, onBack, initialData }: Step2Qualifi
           </label>
           <div className="space-y-3">
             {[
-              { value: 'now', label: 'Now - Ready to start immediately' },
-              { value: 'later', label: 'Later - Planning for the future' },
-              { value: 'never', label: 'Just exploring options' },
+              { value: 'now', label: 'Now' },
+              { value: 'later', label: 'Later' },
+              { value: 'never', label: 'Never' },
             ].map((option) => (
               <label
                 key={option.value}
@@ -79,8 +79,8 @@ export function Step2Qualification({ onNext, onBack, initialData }: Step2Qualifi
           </label>
           <div className="space-y-3">
             {[
-              { value: 'yes', label: 'Yes - I have capital ready' },
-              { value: 'no', label: 'No - Still arranging funds' },
+              { value: 'yes', label: 'Yes' },
+              { value: 'no', label: 'No' },
             ].map((option) => (
               <label
                 key={option.value}
@@ -105,41 +105,7 @@ export function Step2Qualification({ onNext, onBack, initialData }: Step2Qualifi
           )}
         </div>
 
-        {/* Question 3: Seen Elyscents */}
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
-          <label className="block text-lg font-semibold mb-4">
-            Have you seen Elyscents.pk perfume brand?{' '}
-            <span className="text-red-500">*</span>
-          </label>
-          <div className="space-y-3">
-            {[
-              { value: 'yes', label: 'Yes - I am familiar with it' },
-              { value: 'no', label: 'No - First time hearing about it' },
-            ].map((option) => (
-              <label
-                key={option.value}
-                className={`flex items-center p-4 rounded-lg border-2 cursor-pointer transition-all ${
-                  selectedValues.seen_elyscents === option.value
-                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                    : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
-                }`}
-              >
-                <input
-                  type="radio"
-                  value={option.value}
-                  {...register('seen_elyscents')}
-                  className="w-5 h-5 text-blue-600"
-                />
-                <span className="ml-3 text-base">{option.label}</span>
-              </label>
-            ))}
-          </div>
-          {errors.seen_elyscents && (
-            <p className="mt-2 text-sm text-red-500">{errors.seen_elyscents.message}</p>
-          )}
-        </div>
-
-        {/* Question 4: Category Interest */}
+        {/* Question 3: Category Interest */}
         <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
           <label className="block text-lg font-semibold mb-4">
             What category are you interested in?{' '}
@@ -147,9 +113,9 @@ export function Step2Qualification({ onNext, onBack, initialData }: Step2Qualifi
           </label>
           <div className="space-y-3">
             {[
-              { value: 'perfume', label: '🌸 Perfume' },
-              { value: 'beard_oil', label: '🧔 Beard Oil' },
-              { value: 'pain_relief_oils', label: '💆 Pain Relief Oils' },
+              { value: 'skincare', label: 'SkinCare' },
+              { value: 'perfume', label: 'Perfume' },
+              { value: 'gadgets', label: 'Gadgets ( Chinese Products )' },
             ].map((option) => (
               <label
                 key={option.value}

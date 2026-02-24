@@ -41,6 +41,25 @@ export function Step4Confirmation({ bookingData, onReset }: Step4ConfirmationPro
         </p>
       </div>
 
+       {/* Reminder Message */}
+      <div className="my-4 p-4 bg-amber-50 dark:bg-amber-900/20 border-2 border-amber-300 dark:border-amber-700 rounded-lg">
+        <div className="flex items-start gap-3">
+          <div className="flex-shrink-0">
+            <div className="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center">
+              <span className="text-white text-lg">⏰</span>
+            </div>
+          </div>
+          <div>
+            <h4 className="font-semibold text-amber-900 dark:text-amber-300 mb-1">
+              Important Reminder
+            </h4>
+            <p className="text-sm text-amber-800 dark:text-amber-400">
+              Please be available at the selected time - we'll message you 10 minutes before the call begins.
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Meeting Details Card */}
       <div className="bg-white dark:bg-gray-800 rounded-2xl border-2 border-gray-200 dark:border-gray-700 overflow-hidden shadow-lg mb-6">
         
@@ -156,6 +175,8 @@ export function Step4Confirmation({ bookingData, onReset }: Step4ConfirmationPro
           <li>• Our team will be ready to discuss your business goals</li>
         </ul>
       </div>
+
+     
 
       {/* Support Contact */}
       <div className="mt-6 text-center text-sm text-gray-500">

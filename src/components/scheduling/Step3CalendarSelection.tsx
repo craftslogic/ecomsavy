@@ -53,7 +53,7 @@ export function Step3CalendarSelection({ onNext, onBack }: Step3CalendarSelectio
       }
 
       // Extract unique dates from slots
-      const dates = new Set(data.data.map((slot: AvailableSlot) => slot.slot_date));
+      const dates = new Set<string>(data.data.map((slot: AvailableSlot) => slot.slot_date as string));
       setAvailableDates(dates);
     } catch (err) {
       console.error('Error fetching available dates:', err);

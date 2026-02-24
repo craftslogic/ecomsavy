@@ -20,7 +20,6 @@ interface SendAdminNotificationParams {
   qualificationAnswers: {
     businessTimeline: string;
     investmentReady: boolean;
-    seenElyscents: boolean;
     categoryInterest: string;
   };
 }
@@ -237,7 +236,6 @@ export async function sendAdminNotificationEmail(
       <h2>Qualification Answers</h2>
       <p><span class="label">Business Timeline:</span> ${qualificationAnswers.businessTimeline}</p>
       <p><span class="label">Investment Ready:</span> ${qualificationAnswers.investmentReady ? 'Yes ✓' : 'No ✗'}</p>
-      <p><span class="label">Seen Elyscents.pk:</span> ${qualificationAnswers.seenElyscents ? 'Yes ✓' : 'No ✗'}</p>
       <p><span class="label">Category Interest:</span> ${qualificationAnswers.categoryInterest}</p>
     </div>
     

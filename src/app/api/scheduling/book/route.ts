@@ -93,7 +93,7 @@ export async function POST(request: NextRequest) {
     try {
       googleEvent = await createGoogleMeetEvent({
         summary: `Ecomsavy Consultation - ${leadData.full_name}`,
-        description: `Consultation meeting with ${leadData.full_name}\n\nEmail: ${leadData.email}\nPhone: ${leadData.phone}\n\nQualification:\n- Business Timeline: ${qualificationData.business_timeline}\n- Investment Ready: ${qualificationData.investment_ready ? 'Yes' : 'No'}\n- Seen Elyscents: ${qualificationData.seen_elyscents ? 'Yes' : 'No'}\n- Category Interest: ${qualificationData.category_interest}`,
+        description: `Consultation meeting with ${leadData.full_name}\n\nEmail: ${leadData.email}\nPhone: ${leadData.phone}\n\nQualification:\n- Business Timeline: ${qualificationData.business_timeline}\n- Investment Ready: ${qualificationData.investment_ready ? 'Yes' : 'No'}\n- Category Interest: ${qualificationData.category_interest}`,
         startDateTime: startDateTime,
         endDateTime: endDateTime,
         attendeeEmail: leadData.email,
@@ -197,7 +197,6 @@ export async function POST(request: NextRequest) {
         qualificationAnswers: {
           businessTimeline: qualificationData.business_timeline,
           investmentReady: qualificationData.investment_ready,
-          seenElyscents: qualificationData.seen_elyscents,
           categoryInterest: qualificationData.category_interest,
         },
       });

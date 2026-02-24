@@ -2,13 +2,12 @@
 
 import { useState } from 'react';
 import { Step1LeadCapture } from '@/components/scheduling/Step1LeadCapture';
-import { Step2Qualification } from '@/components/scheduling/Step2Qualification';
-import { Step3CalendarSelection } from '@/components/scheduling/Step3CalendarSelection';
+import { Step2QualificationAndCalendar } from '@/components/scheduling/Step2QualificationAndCalendar';
 import { Step4Confirmation } from '@/components/scheduling/Step4Confirmation';
 import type {
   LeadCaptureFormData,
   QualificationFormData,
-  SlotSelectionFormData,
+  QualificationWithContactFormData,
   SchedulingFunnelData,
 } from '@/types/scheduling';
 import { toast } from 'sonner';
@@ -58,92 +57,106 @@ export default function ScheduleAMeetPage() {
     }
   };
 
-  // Step 2: Handle qualification
-  const handleQualification = async (data: QualificationFormData) => {
+  // Step 2: Handle qualification and slot selection combined
+  const handleQualificationAndSlotSelection = async (
+    data: QualificationWithContactFormData & {
+      slot_id: string;
+      slot_date: string;
+      start_time: string;
+      end_time: string;
+    }
+  ) => {
     try {
       setIsProcessing(true);
 
-      // Save qualification data to state
-      setFunnelData((prev) => ({ ...prev, qualification: data }));
+      // Extract contact info, qualification, and slot data
+      const {
+        slot_id,
+        slot_date,
+        start_time,
+        end_time,
+        full_name,
+        email,
+        phone,
+        ...qualificationData
+      } = data;
 
-      // Save qualification to database
-      const response = await fetch('/api/scheduling/qualification', {
+      const contactData = { full_name, email, phone };
+
+      // Update or create lead in database
+      const leadResponse = await fetch('/api/scheduling/lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          lead_id: funnelData.leadId,
-          business_timeline: data.business_timeline,
-          investment_ready: data.investment_ready === 'yes',
-          seen_elyscents: data.seen_elyscents === 'yes',
-          category_interest: data.category_interest,
-        }),
+        body: JSON.stringify(contactData),
       });
 
-      const result = await response.json();
+      const leadResult = await leadResponse.json();
 
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to save qualification');
+      if (!leadResponse.ok) {
+        throw new Error(leadResult.error || 'Failed to save contact information');
       }
 
-      // Move to next step
-      setCurrentStep(3);
-      toast.success('Qualification saved!');
-    } catch (error) {
-      console.error('Error in qualification:', error);
-      toast.error(error instanceof Error ? error.message : 'Failed to save qualification');
-    } finally {
-      setIsProcessing(false);
-    }
-  };
+      const leadId = leadResult.data.id;
 
-  // Step 3: Handle slot selection and booking
-  const handleSlotSelection = async (slotData: {
-    slot_id: string;
-    slot_date: string;
-    start_time: string;
-    end_time: string;
-  }) => {
-    try {
-      setIsProcessing(true);
-
-      // Save slot data to state
+      // Save all data to state
       setFunnelData((prev) => ({
         ...prev,
-        slot: slotData,
+        lead: contactData,
+        leadId: leadId,
+        qualification: qualificationData,
+        slot: { slot_id, slot_date, start_time, end_time },
       }));
 
-      // Book the meeting
-      const response = await fetch('/api/scheduling/book', {
+      // Save qualification to database
+      const qualificationResponse = await fetch('/api/scheduling/qualification', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          lead_id: funnelData.leadId,
-          slot_id: slotData.slot_id,
+          lead_id: leadId,
+          business_timeline: qualificationData.business_timeline,
+          investment_ready: qualificationData.investment_ready === 'yes',
+          category_interest: qualificationData.category_interest,
         }),
       });
 
-      const result = await response.json();
+      const qualificationResult = await qualificationResponse.json();
 
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to book meeting');
+      if (!qualificationResponse.ok) {
+        throw new Error(qualificationResult.error || 'Failed to save qualification');
+      }
+
+      // Book the meeting
+      const bookingResponse = await fetch('/api/scheduling/book', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          lead_id: leadId,
+          slot_id: slot_id,
+        }),
+      });
+
+      const bookingResult = await bookingResponse.json();
+
+      if (!bookingResponse.ok) {
+        throw new Error(bookingResult.error || 'Failed to book meeting');
       }
 
       // Save booking confirmation
       setBookingConfirmation({
-        ...result.data,
-        lead_name: funnelData.lead?.full_name,
-        lead_email: funnelData.lead?.email,
+        ...bookingResult.data,
+        lead_name: full_name,
+        lead_email: email,
       });
 
       // Move to confirmation step
-      setCurrentStep(4);
+      setCurrentStep(3);
       toast.success('Meeting booked successfully!');
     } catch (error) {
-      console.error('Error booking meeting:', error);
+      console.error('Error in booking process:', error);
       toast.error(
         error instanceof Error
           ? error.message
-          : 'Failed to book meeting. Please try a different time slot.'
+          : 'Failed to complete booking. Please try again.'
       );
     } finally {
       setIsProcessing(false);
@@ -165,10 +178,10 @@ export default function ScheduleAMeetPage() {
     <div className="min-h-screen bg-white/60 dark:bg-gray-900/60 backdrop-blur-sm py-12 px-4">
       <div className="container mx-auto">
         {/* Progress Indicator */}
-        {currentStep < 4 && (
+        {currentStep < 3 && (
           <div className="max-w-2xl mx-auto mb-12">
             <div className="flex items-center justify-between">
-              {[1, 2, 3].map((step) => (
+              {[1, 2].map((step) => (
                 <div key={step} className="flex items-center flex-1">
                   <div
                     className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${
@@ -179,7 +192,7 @@ export default function ScheduleAMeetPage() {
                   >
                     {step}
                   </div>
-                  {step < 3 && (
+                  {step < 2 && (
                     <div
                       className={`flex-1 h-1 mx-2 ${
                         currentStep > step
@@ -193,8 +206,7 @@ export default function ScheduleAMeetPage() {
             </div>
             <div className="flex justify-between mt-2 text-xs text-gray-600 dark:text-gray-400">
               <span>Your Details</span>
-              <span>Qualification</span>
-              <span>Schedule</span>
+              <span>Qualification & Schedule</span>
             </div>
           </div>
         )}
@@ -206,21 +218,21 @@ export default function ScheduleAMeetPage() {
           )}
 
           {currentStep === 2 && (
-            <Step2Qualification
-              onNext={handleQualification}
+            <Step2QualificationAndCalendar
+              onNext={handleQualificationAndSlotSelection}
               onBack={() => setCurrentStep(1)}
-              initialData={funnelData.qualification || undefined}
+              initialData={
+                funnelData.lead && funnelData.qualification
+                  ? {
+                      ...funnelData.lead,
+                      ...funnelData.qualification,
+                    }
+                  : funnelData.lead || undefined
+              }
             />
           )}
 
-          {currentStep === 3 && (
-            <Step3CalendarSelection
-              onNext={handleSlotSelection}
-              onBack={() => setCurrentStep(2)}
-            />
-          )}
-
-          {currentStep === 4 && bookingConfirmation && (
+          {currentStep === 3 && bookingConfirmation && (
             <Step4Confirmation bookingData={bookingConfirmation} onReset={handleReset} />
           )}
         </div>

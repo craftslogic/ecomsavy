@@ -30,8 +30,7 @@ CREATE TABLE qualification_responses (
     -- Question answers
     business_timeline VARCHAR(50) NOT NULL CHECK (business_timeline IN ('now', 'later', 'never')),
     investment_ready BOOLEAN NOT NULL,
-    seen_elyscents BOOLEAN NOT NULL,
-    category_interest VARCHAR(50) NOT NULL CHECK (category_interest IN ('perfume', 'beard_oil', 'pain_relief_oils')),
+    category_interest VARCHAR(50) NOT NULL CHECK (category_interest IN ('skincare', 'perfume', 'gadgets')),
     
     created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW()),
     
@@ -256,17 +255,22 @@ BEGIN
         
         -- Only add slots for weekdays
         IF EXTRACT(DOW FROM v_date) BETWEEN 1 AND 5 THEN
-            -- Morning slots (9 AM - 12 PM)
+            -- Morning slots (10:00 AM - 1:00 PM)
             INSERT INTO available_slots (slot_date, start_time, end_time) VALUES
-                (v_date, '09:00:00', '10:00:00'),
-                (v_date, '10:00:00', '11:00:00'),
-                (v_date, '11:00:00', '12:00:00');
+                (v_date, '10:00:00', '10:30:00'),
+                (v_date, '10:30:00', '11:00:00'),
+                (v_date, '11:00:00', '11:30:00'),
+                (v_date, '11:30:00', '12:00:00'),
+                (v_date, '12:00:00', '12:30:00'),
+                (v_date, '12:30:00', '13:00:00');
             
-            -- Afternoon slots (2 PM - 5 PM)
+            -- Afternoon slots (2:00 PM - 4:30 PM) - Break from 1 PM to 2 PM
             INSERT INTO available_slots (slot_date, start_time, end_time) VALUES
-                (v_date, '14:00:00', '15:00:00'),
-                (v_date, '15:00:00', '16:00:00'),
-                (v_date, '16:00:00', '17:00:00');
+                (v_date, '14:00:00', '14:30:00'),
+                (v_date, '14:30:00', '15:00:00'),
+                (v_date, '15:00:00', '15:30:00'),
+                (v_date, '15:30:00', '16:00:00'),
+                (v_date, '16:00:00', '16:30:00');
         END IF;
     END LOOP;
 END $$;
@@ -287,7 +291,6 @@ SELECT
     -- Qualification data
     qr.business_timeline,
     qr.investment_ready,
-    qr.seen_elyscents,
     qr.category_interest,
     
     -- Booking data
