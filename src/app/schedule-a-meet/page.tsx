@@ -1,9 +1,10 @@
-'use client';
+"use client";
 
-import { FadeUp, SlideUp } from '@/components/AnimatedSection';
-import YouTubeEmbed from '@/components/YouTubeEmbed';
-import { SchedulingFormWrapper } from '@/components/scheduling/SchedulingFormWrapper';
-import { Check } from 'lucide-react';
+import { FadeUp, SlideUp } from "@/components/AnimatedSection";
+import YouTubeEmbed from "@/components/YouTubeEmbed";
+import { SchedulingFormWrapper } from "@/components/scheduling/SchedulingFormWrapper";
+import { videoConfig } from "@/config/videos";
+import { Check } from "lucide-react";
 
 export default function ScheduleAMeetPage() {
   return (
@@ -16,15 +17,18 @@ export default function ScheduleAMeetPage() {
               Become a Brand Owner in 40 Days — Even Without a Product
             </h1>
             <p className="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto">
-              We help beginners launch their own beard oil, skincare, toys, home and kitchen gadgets brands — with packaging, store, design, and ads — all done-for-you.
+              We help beginners launch their own beard oil, skincare, toys, home
+              and kitchen gadgets brands — with packaging, store, design, and
+              ads — all done-for-you.
             </p>
           </FadeUp>
 
           <SlideUp delay={0.2} className="mt-12">
             <div className="max-w-3xl mx-auto">
               <YouTubeEmbed
-                videoId="dQw4w9WgXcQ"
-                title="Brand Launch Overview"
+                videoId={videoConfig.hero.videoId}
+                title={videoConfig.hero.title}
+                posterImage={videoConfig.hero.posterImage}
                 aspectRatio="video"
               />
             </div>
@@ -40,7 +44,8 @@ export default function ScheduleAMeetPage() {
               What We'll Do For You – In Just 40 Days
             </h2>
             <p className="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto mb-8">
-              We don't just help you design a logo or give you a course — we build your entire brand from scratch, ready to sell.
+              We don't just help you design a logo or give you a course — we
+              build your entire brand from scratch, ready to sell.
             </p>
             <h3 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-8">
               Here's what's included:
@@ -49,15 +54,15 @@ export default function ScheduleAMeetPage() {
 
           <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {[
-              'Custom Brand Name & Logo',
-              'Product Bottles with Printing',
-              'Product Photography + 1 Launch Ad Video',
-              'Facebook Ad Manager + Pixel Integration',
-              'Full 1-on-1 Guidance Till You Launch',
-              'Premium Packaging & Label Design',
-              'Shopify Store (Fully Built for You)',
-              'Social Media Account Setup',
-              'COD Courier + Payment Setup',
+              "Custom Brand Name & Logo",
+              "Product Bottles with Printing",
+              "Product Photography + 1 Launch Ad Video",
+              "Facebook Ad Manager + Pixel Integration",
+              "Full 1-on-1 Guidance Till You Launch",
+              "Premium Packaging & Label Design",
+              "Shopify Store (Fully Built for You)",
+              "Social Media Account Setup",
+              "COD Courier + Payment Setup",
             ].map((item, index) => (
               <SlideUp key={index} delay={0.1 * index}>
                 <div className="flex items-start gap-3 bg-white p-6 rounded-lg shadow-sm">
@@ -80,16 +85,18 @@ export default function ScheduleAMeetPage() {
               Our Success Story
             </h2>
             <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
-              Starting with the same proven system, we have grown into Pakistan's leading online skincare brand, consistently achieving 500+ orders daily and generating millions in revenue.
+              Starting with the same proven system, we have grown into
+              Pakistan's leading online skincare brand, consistently achieving
+              500+ orders daily and generating millions in revenue.
             </p>
           </FadeUp>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-12">
             {[
-              { value: '500+', label: 'Daily Orders' },
-              { value: '5 Crore+', label: 'Monthly Revenue' },
-              { value: '150k+', label: 'Happy Customers' },
-              { value: '2-3 Years', label: 'To Success' },
+              { value: "500+", label: "Daily Orders" },
+              { value: "5 Crore+", label: "Monthly Revenue" },
+              { value: "150k+", label: "Happy Customers" },
+              { value: "2-3 Years", label: "To Success" },
             ].map((stat, index) => (
               <SlideUp key={index} delay={0.1 * index}>
                 <div className="text-center">
@@ -107,14 +114,16 @@ export default function ScheduleAMeetPage() {
           <FadeUp delay={0.3}>
             <div className="max-w-3xl mx-auto text-center mb-8">
               <blockquote className="text-xl md:text-2xl italic text-gray-300 mb-8">
-                "The same proven system that built Ecomsavy can build your brand. We know what works because we've done it ourselves."
+                "The same proven system that built Ecomsavy can build your
+                brand. We know what works because we've done it ourselves."
               </blockquote>
               <div className="bg-white/10 backdrop-blur-sm p-8 rounded-lg">
                 <h3 className="text-2xl md:text-3xl font-bold mb-4">
                   From Startup to Market Leader
                 </h3>
                 <p className="text-lg text-gray-300">
-                  The exact blueprint we used for Ecomsavy is now available for your brand.
+                  The exact blueprint we used for Ecomsavy is now available for
+                  your brand.
                 </p>
               </div>
             </div>
@@ -142,17 +151,19 @@ export default function ScheduleAMeetPage() {
                   Starter Package
                 </h3>
                 <div className="mb-6">
-                  <div className="text-sm text-gray-600 mb-2">Service Charges:</div>
+                  <div className="text-sm text-gray-600 mb-2">
+                    Service Charges:
+                  </div>
                   <div className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                     Rs. 150,000
                   </div>
-                  <div className="text-sm text-gray-600 mb-2">Product Cost:</div>
+                  <div className="text-sm text-gray-600 mb-2">
+                    Product Cost:
+                  </div>
                   <div className="text-2xl font-bold text-gray-900 mb-2">
                     Rs. 70,000
                   </div>
-                  <div className="text-gray-600">
-                    100 serums @ Rs. 700 each
-                  </div>
+                  <div className="text-gray-600">100 serums @ Rs. 700 each</div>
                 </div>
                 <p className="text-gray-700 mt-4">
                   Perfect for testing the market with lower investment
@@ -170,7 +181,9 @@ export default function ScheduleAMeetPage() {
                   Growth Package
                 </h3>
                 <div className="mb-6">
-                  <div className="text-sm text-gray-600 mb-2">Service Charges:</div>
+                  <div className="text-sm text-gray-600 mb-2">
+                    Service Charges:
+                  </div>
                   <div className="text-3xl md:text-4xl font-bold text-green-600 mb-4">
                     Rs. 0
                   </div>
@@ -180,7 +193,8 @@ export default function ScheduleAMeetPage() {
                   </div>
                 </div>
                 <p className="text-gray-700 mt-4">
-                  No service charges - pay only for products<br />
+                  No service charges - pay only for products
+                  <br />
                   Best value for serious entrepreneurs
                 </p>
               </div>
@@ -190,7 +204,10 @@ export default function ScheduleAMeetPage() {
       </section>
 
       {/* SECTION 5 - GET STARTED (FORM) */}
-      <section id="get-started" className="relative w-full bg-gray-50 py-16 md:py-24 px-4">
+      <section
+        id="get-started"
+        className="relative w-full bg-gray-50 py-16 md:py-24 px-4"
+      >
         <div className="max-w-5xl mx-auto">
           <FadeUp className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
@@ -226,16 +243,24 @@ export default function ScheduleAMeetPage() {
               <table className="w-full border-collapse bg-white shadow-lg rounded-lg overflow-hidden">
                 <thead>
                   <tr className="bg-gray-900 text-white">
-                    <th className="text-left p-4 md:p-6 font-semibold">What's Included</th>
-                    <th className="text-center p-4 md:p-6 font-semibold">Starter Package</th>
-                    <th className="text-center p-4 md:p-6 font-semibold">Growth Package</th>
+                    <th className="text-left p-4 md:p-6 font-semibold">
+                      What's Included
+                    </th>
+                    <th className="text-center p-4 md:p-6 font-semibold">
+                      Starter Package
+                    </th>
+                    <th className="text-center p-4 md:p-6 font-semibold">
+                      Growth Package
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr className="border-b border-gray-200 hover:bg-gray-50">
                     <td className="p-4 md:p-6 font-medium">Service Charges</td>
                     <td className="p-4 md:p-6 text-center">Rs. 150,000</td>
-                    <td className="p-4 md:p-6 text-center font-bold text-green-600">Rs. 0</td>
+                    <td className="p-4 md:p-6 text-center font-bold text-green-600">
+                      Rs. 0
+                    </td>
                   </tr>
                   <tr className="border-b border-gray-200 hover:bg-gray-50">
                     <td className="p-4 md:p-6 font-medium">MOQ (Serum)</td>
@@ -243,22 +268,27 @@ export default function ScheduleAMeetPage() {
                     <td className="p-4 md:p-6 text-center">1,000 pieces</td>
                   </tr>
                   <tr className="border-b border-gray-200 hover:bg-gray-50">
-                    <td className="p-4 md:p-6 font-medium">Product Cost (Serum)</td>
+                    <td className="p-4 md:p-6 font-medium">
+                      Product Cost (Serum)
+                    </td>
                     <td className="p-4 md:p-6 text-center">Rs. 700 each</td>
                     <td className="p-4 md:p-6 text-center">Variable pricing</td>
                   </tr>
                   {[
-                    'Logo, Branding, Packaging Design',
-                    'Label + Box Printing',
-                    'Shopify Store (Professional Setup)',
-                    'Website Content + Product Shoot',
-                    'One Video Ad (Launch Focused)',
-                    'Social Media Handles Setup',
-                    'Facebook BM, Ad Account, Pixel',
-                    'Courier + COD Integration',
-                    '1-on-1 Brand Strategy Support',
+                    "Logo, Branding, Packaging Design",
+                    "Label + Box Printing",
+                    "Shopify Store (Professional Setup)",
+                    "Website Content + Product Shoot",
+                    "One Video Ad (Launch Focused)",
+                    "Social Media Handles Setup",
+                    "Facebook BM, Ad Account, Pixel",
+                    "Courier + COD Integration",
+                    "1-on-1 Brand Strategy Support",
                   ].map((feature, index) => (
-                    <tr key={index} className="border-b border-gray-200 hover:bg-gray-50">
+                    <tr
+                      key={index}
+                      className="border-b border-gray-200 hover:bg-gray-50"
+                    >
                       <td className="p-4 md:p-6 font-medium">{feature}</td>
                       <td className="p-4 md:p-6 text-center">
                         <Check className="w-6 h-6 text-green-600 mx-auto" />
@@ -280,10 +310,12 @@ export default function ScheduleAMeetPage() {
         <div className="max-w-4xl mx-auto text-center">
           <FadeUp>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8">
-              You're not just launching a product — you're stepping into a new identity: Brand Owner.
+              You're not just launching a product — you're stepping into a new
+              identity: Brand Owner.
             </h2>
             <p className="text-lg md:text-xl text-gray-300 mb-8">
-              We've helped dozens of people start profitable ecommerce brands — without any marketing background, design skills, or warehouse.
+              We've helped dozens of people start profitable ecommerce brands —
+              without any marketing background, design skills, or warehouse.
             </p>
             <p className="text-lg md:text-xl text-gray-300 mb-8">
               Your vision + our team = fully launched business in 40-60 days.
