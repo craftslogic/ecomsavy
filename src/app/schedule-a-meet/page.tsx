@@ -1,242 +1,308 @@
 'use client';
 
-import { useState } from 'react';
-import { Step1LeadCapture } from '@/components/scheduling/Step1LeadCapture';
-import { Step2QualificationAndCalendar } from '@/components/scheduling/Step2QualificationAndCalendar';
-import { Step4Confirmation } from '@/components/scheduling/Step4Confirmation';
-import type {
-  LeadCaptureFormData,
-  QualificationFormData,
-  QualificationWithContactFormData,
-  SchedulingFunnelData,
-} from '@/types/scheduling';
-import { toast } from 'sonner';
+import { FadeUp, SlideUp } from '@/components/AnimatedSection';
+import YouTubeEmbed from '@/components/YouTubeEmbed';
+import { SchedulingFormWrapper } from '@/components/scheduling/SchedulingFormWrapper';
+import { Check } from 'lucide-react';
 
 export default function ScheduleAMeetPage() {
-  const [currentStep, setCurrentStep] = useState(1);
-  const [funnelData, setFunnelData] = useState<SchedulingFunnelData>({
-    lead: null,
-    qualification: null,
-    slot: null,
-  });
-  const [bookingConfirmation, setBookingConfirmation] = useState<any>(null);
-  const [isProcessing, setIsProcessing] = useState(false);
-
-  // Step 1: Handle lead capture
-  const handleLeadCapture = async (data: LeadCaptureFormData) => {
-    try {
-      setIsProcessing(true);
-
-      // Save lead data to state
-      setFunnelData((prev) => ({ ...prev, lead: data }));
-
-      // Create lead in database
-      const response = await fetch('/api/scheduling/lead', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.error || 'Failed to create lead');
-      }
-
-      // Save lead ID for later use
-      setFunnelData((prev) => ({ ...prev, leadId: result.data.id }));
-
-      // Move to next step
-      setCurrentStep(2);
-      toast.success('Information saved!');
-    } catch (error) {
-      console.error('Error in lead capture:', error);
-      toast.error(error instanceof Error ? error.message : 'Failed to save information');
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
-  // Step 2: Handle qualification and slot selection combined
-  const handleQualificationAndSlotSelection = async (
-    data: QualificationWithContactFormData & {
-      slot_id: string;
-      slot_date: string;
-      start_time: string;
-      end_time: string;
-    }
-  ) => {
-    try {
-      setIsProcessing(true);
-
-      // Extract contact info, qualification, and slot data
-      const {
-        slot_id,
-        slot_date,
-        start_time,
-        end_time,
-        full_name,
-        email,
-        phone,
-        ...qualificationData
-      } = data;
-
-      const contactData = { full_name, email, phone };
-
-      // Update or create lead in database
-      const leadResponse = await fetch('/api/scheduling/lead', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(contactData),
-      });
-
-      const leadResult = await leadResponse.json();
-
-      if (!leadResponse.ok) {
-        throw new Error(leadResult.error || 'Failed to save contact information');
-      }
-
-      const leadId = leadResult.data.id;
-
-      // Save all data to state
-      setFunnelData((prev) => ({
-        ...prev,
-        lead: contactData,
-        leadId: leadId,
-        qualification: qualificationData,
-        slot: { slot_id, slot_date, start_time, end_time },
-      }));
-
-      // Save qualification to database
-      const qualificationResponse = await fetch('/api/scheduling/qualification', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          lead_id: leadId,
-          business_timeline: qualificationData.business_timeline,
-          investment_ready: qualificationData.investment_ready === 'yes',
-          category_interest: qualificationData.category_interest,
-        }),
-      });
-
-      const qualificationResult = await qualificationResponse.json();
-
-      if (!qualificationResponse.ok) {
-        throw new Error(qualificationResult.error || 'Failed to save qualification');
-      }
-
-      // Book the meeting
-      const bookingResponse = await fetch('/api/scheduling/book', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          lead_id: leadId,
-          slot_id: slot_id,
-        }),
-      });
-
-      const bookingResult = await bookingResponse.json();
-
-      if (!bookingResponse.ok) {
-        throw new Error(bookingResult.error || 'Failed to book meeting');
-      }
-
-      // Save booking confirmation
-      setBookingConfirmation({
-        ...bookingResult.data,
-        lead_name: full_name,
-        lead_email: email,
-      });
-
-      // Move to confirmation step
-      setCurrentStep(3);
-      toast.success('Meeting booked successfully!');
-    } catch (error) {
-      console.error('Error in booking process:', error);
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : 'Failed to complete booking. Please try again.'
-      );
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
-  // Reset the funnel
-  const handleReset = () => {
-    setCurrentStep(1);
-    setFunnelData({
-      lead: null,
-      qualification: null,
-      slot: null,
-    });
-    setBookingConfirmation(null);
-  };
-
   return (
-    <div className="min-h-screen bg-white/60 dark:bg-gray-900/60 backdrop-blur-sm py-12 px-4">
-      <div className="container mx-auto">
-        {/* Progress Indicator */}
-        {currentStep < 3 && (
-          <div className="max-w-2xl mx-auto mb-12">
-            <div className="flex items-center justify-between">
-              {[1, 2].map((step) => (
-                <div key={step} className="flex items-center flex-1">
-                  <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${
-                      currentStep >= step
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-gray-200 dark:bg-gray-700 text-gray-500'
-                    } transition-all`}
-                  >
-                    {step}
-                  </div>
-                  {step < 2 && (
-                    <div
-                      className={`flex-1 h-1 mx-2 ${
-                        currentStep > step
-                          ? 'bg-blue-600'
-                          : 'bg-gray-200 dark:bg-gray-700'
-                      } transition-all`}
-                    />
-                  )}
-                </div>
-              ))}
+    <main className="relative w-full min-h-screen overflow-x-hidden">
+      {/* SECTION 1 - HERO */}
+      <section className="relative w-full bg-white/60 backdrop-blur-sm pt-24 md:pt-32 pb-16 md:pb-24 px-4">
+        <div className="max-w-4xl mx-auto">
+          <FadeUp className="text-center mb-8">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6">
+              Become a Brand Owner in 40 Days — Even Without a Product
+            </h1>
+            <p className="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto">
+              We help beginners launch their own beard oil, skincare, toys, home and kitchen gadgets brands — with packaging, store, design, and ads — all done-for-you.
+            </p>
+          </FadeUp>
+
+          <SlideUp delay={0.2} className="mt-12">
+            <div className="max-w-3xl mx-auto">
+              <YouTubeEmbed
+                videoId="dQw4w9WgXcQ"
+                title="Brand Launch Overview"
+                aspectRatio="video"
+              />
             </div>
-            <div className="flex justify-between mt-2 text-xs text-gray-600 dark:text-gray-400">
-              <span>Your Details</span>
-              <span>Qualification & Schedule</span>
-            </div>
-          </div>
-        )}
-
-        {/* Step Content */}
-        <div className="mt-8">
-          {currentStep === 1 && (
-            <Step1LeadCapture onNext={handleLeadCapture} initialData={funnelData.lead || undefined} />
-          )}
-
-          {currentStep === 2 && (
-            <Step2QualificationAndCalendar
-              onNext={handleQualificationAndSlotSelection}
-              onBack={() => setCurrentStep(1)}
-              initialData={
-                funnelData.lead && funnelData.qualification
-                  ? {
-                      ...funnelData.lead,
-                      ...funnelData.qualification,
-                    }
-                  : funnelData.lead || undefined
-              }
-            />
-          )}
-
-          {currentStep === 3 && bookingConfirmation && (
-            <Step4Confirmation bookingData={bookingConfirmation} onReset={handleReset} />
-          )}
+          </SlideUp>
         </div>
-      </div>
-    </div>
+      </section>
+
+      {/* SECTION 2 - WHAT WE'LL DO FOR YOU */}
+      <section className="relative w-full bg-gray-50 py-16 md:py-24 px-4">
+        <div className="max-w-5xl mx-auto">
+          <FadeUp className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+              What We'll Do For You – In Just 40 Days
+            </h2>
+            <p className="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto mb-8">
+              We don't just help you design a logo or give you a course — we build your entire brand from scratch, ready to sell.
+            </p>
+            <h3 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-8">
+              Here's what's included:
+            </h3>
+          </FadeUp>
+
+          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            {[
+              'Custom Brand Name & Logo',
+              'Product Bottles with Printing',
+              'Product Photography + 1 Launch Ad Video',
+              'Facebook Ad Manager + Pixel Integration',
+              'Full 1-on-1 Guidance Till You Launch',
+              'Premium Packaging & Label Design',
+              'Shopify Store (Fully Built for You)',
+              'Social Media Account Setup',
+              'COD Courier + Payment Setup',
+            ].map((item, index) => (
+              <SlideUp key={index} delay={0.1 * index}>
+                <div className="flex items-start gap-3 bg-white p-6 rounded-lg shadow-sm">
+                  <div className="shrink-0 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mt-1">
+                    <Check className="w-4 h-4 text-green-600" />
+                  </div>
+                  <p className="text-lg text-gray-800 font-medium">{item}</p>
+                </div>
+              </SlideUp>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 3 - SUCCESS STORY */}
+      <section className="relative w-full bg-black text-white py-16 md:py-24 px-4">
+        <div className="max-w-6xl mx-auto">
+          <FadeUp className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
+              Our Success Story
+            </h2>
+            <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
+              Starting with the same proven system, we have grown into Pakistan's leading online skincare brand, consistently achieving 500+ orders daily and generating millions in revenue.
+            </p>
+          </FadeUp>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-12">
+            {[
+              { value: '500+', label: 'Daily Orders' },
+              { value: '5 Crore+', label: 'Monthly Revenue' },
+              { value: '150k+', label: 'Happy Customers' },
+              { value: '2-3 Years', label: 'To Success' },
+            ].map((stat, index) => (
+              <SlideUp key={index} delay={0.1 * index}>
+                <div className="text-center">
+                  <div className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2">
+                    {stat.value}
+                  </div>
+                  <div className="text-sm md:text-base text-gray-400">
+                    {stat.label}
+                  </div>
+                </div>
+              </SlideUp>
+            ))}
+          </div>
+
+          <FadeUp delay={0.3}>
+            <div className="max-w-3xl mx-auto text-center mb-8">
+              <blockquote className="text-xl md:text-2xl italic text-gray-300 mb-8">
+                "The same proven system that built Ecomsavy can build your brand. We know what works because we've done it ourselves."
+              </blockquote>
+              <div className="bg-white/10 backdrop-blur-sm p-8 rounded-lg">
+                <h3 className="text-2xl md:text-3xl font-bold mb-4">
+                  From Startup to Market Leader
+                </h3>
+                <p className="text-lg text-gray-300">
+                  The exact blueprint we used for Ecomsavy is now available for your brand.
+                </p>
+              </div>
+            </div>
+          </FadeUp>
+        </div>
+      </section>
+
+      {/* SECTION 4 - PACKAGES */}
+      <section className="relative w-full bg-white py-16 md:py-24 px-4">
+        <div className="max-w-6xl mx-auto">
+          <FadeUp className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+              Choose Your Brand Launch Package
+            </h2>
+            <p className="text-lg md:text-xl text-gray-600">
+              Select the package that fits your budget and goals:
+            </p>
+          </FadeUp>
+
+          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {/* Starter Package */}
+            <SlideUp delay={0.1}>
+              <div className="bg-gray-50 border-2 border-gray-200 rounded-xl p-8 hover:shadow-xl transition-shadow">
+                <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
+                  Starter Package
+                </h3>
+                <div className="mb-6">
+                  <div className="text-sm text-gray-600 mb-2">Service Charges:</div>
+                  <div className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                    Rs. 150,000
+                  </div>
+                  <div className="text-sm text-gray-600 mb-2">Product Cost:</div>
+                  <div className="text-2xl font-bold text-gray-900 mb-2">
+                    Rs. 70,000
+                  </div>
+                  <div className="text-gray-600">
+                    100 serums @ Rs. 700 each
+                  </div>
+                </div>
+                <p className="text-gray-700 mt-4">
+                  Perfect for testing the market with lower investment
+                </p>
+              </div>
+            </SlideUp>
+
+            {/* Growth Package */}
+            <SlideUp delay={0.2}>
+              <div className="bg-linear-to-br from-blue-50 to-blue-100 border-2 border-blue-300 rounded-xl p-8 hover:shadow-xl transition-shadow relative">
+                <div className="absolute top-4 right-4 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full">
+                  BEST VALUE
+                </div>
+                <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
+                  Growth Package
+                </h3>
+                <div className="mb-6">
+                  <div className="text-sm text-gray-600 mb-2">Service Charges:</div>
+                  <div className="text-3xl md:text-4xl font-bold text-green-600 mb-4">
+                    Rs. 0
+                  </div>
+                  <div className="text-sm text-gray-600 mb-2">MOQ:</div>
+                  <div className="text-2xl font-bold text-gray-900 mb-2">
+                    1,000 pieces
+                  </div>
+                </div>
+                <p className="text-gray-700 mt-4">
+                  No service charges - pay only for products<br />
+                  Best value for serious entrepreneurs
+                </p>
+              </div>
+            </SlideUp>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 5 - GET STARTED (FORM) */}
+      <section id="get-started" className="relative w-full bg-gray-50 py-16 md:py-24 px-4">
+        <div className="max-w-5xl mx-auto">
+          <FadeUp className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+              Get Started - Book Your Free Strategy Call
+            </h2>
+            <p className="text-lg md:text-xl text-gray-600 mb-2">
+              Launching 20-30 brands every month
+            </p>
+          </FadeUp>
+
+          <SlideUp delay={0.2}>
+            <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
+              <SchedulingFormWrapper />
+              <p className="text-center text-sm text-gray-500 mt-6">
+                No spam, ever. Your information is 100% secure.
+              </p>
+            </div>
+          </SlideUp>
+        </div>
+      </section>
+
+      {/* SECTION 6 - PRICING TABLE */}
+      <section className="relative w-full bg-white py-16 md:py-24 px-4">
+        <div className="max-w-6xl mx-auto">
+          <FadeUp className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+              Transparent Pricing – No Hidden Charges
+            </h2>
+          </FadeUp>
+
+          <SlideUp delay={0.2}>
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse bg-white shadow-lg rounded-lg overflow-hidden">
+                <thead>
+                  <tr className="bg-gray-900 text-white">
+                    <th className="text-left p-4 md:p-6 font-semibold">What's Included</th>
+                    <th className="text-center p-4 md:p-6 font-semibold">Starter Package</th>
+                    <th className="text-center p-4 md:p-6 font-semibold">Growth Package</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b border-gray-200 hover:bg-gray-50">
+                    <td className="p-4 md:p-6 font-medium">Service Charges</td>
+                    <td className="p-4 md:p-6 text-center">Rs. 150,000</td>
+                    <td className="p-4 md:p-6 text-center font-bold text-green-600">Rs. 0</td>
+                  </tr>
+                  <tr className="border-b border-gray-200 hover:bg-gray-50">
+                    <td className="p-4 md:p-6 font-medium">MOQ (Serum)</td>
+                    <td className="p-4 md:p-6 text-center">100 pieces</td>
+                    <td className="p-4 md:p-6 text-center">1,000 pieces</td>
+                  </tr>
+                  <tr className="border-b border-gray-200 hover:bg-gray-50">
+                    <td className="p-4 md:p-6 font-medium">Product Cost (Serum)</td>
+                    <td className="p-4 md:p-6 text-center">Rs. 700 each</td>
+                    <td className="p-4 md:p-6 text-center">Variable pricing</td>
+                  </tr>
+                  {[
+                    'Logo, Branding, Packaging Design',
+                    'Label + Box Printing',
+                    'Shopify Store (Professional Setup)',
+                    'Website Content + Product Shoot',
+                    'One Video Ad (Launch Focused)',
+                    'Social Media Handles Setup',
+                    'Facebook BM, Ad Account, Pixel',
+                    'Courier + COD Integration',
+                    '1-on-1 Brand Strategy Support',
+                  ].map((feature, index) => (
+                    <tr key={index} className="border-b border-gray-200 hover:bg-gray-50">
+                      <td className="p-4 md:p-6 font-medium">{feature}</td>
+                      <td className="p-4 md:p-6 text-center">
+                        <Check className="w-6 h-6 text-green-600 mx-auto" />
+                      </td>
+                      <td className="p-4 md:p-6 text-center">
+                        <Check className="w-6 h-6 text-green-600 mx-auto" />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </SlideUp>
+        </div>
+      </section>
+
+      {/* SECTION 7 - FINAL CTA */}
+      <section className="relative w-full bg-linear-to-br from-gray-900 to-black text-white py-16 md:py-24 px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <FadeUp>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8">
+              You're not just launching a product — you're stepping into a new identity: Brand Owner.
+            </h2>
+            <p className="text-lg md:text-xl text-gray-300 mb-8">
+              We've helped dozens of people start profitable ecommerce brands — without any marketing background, design skills, or warehouse.
+            </p>
+            <p className="text-lg md:text-xl text-gray-300 mb-8">
+              Your vision + our team = fully launched business in 40-60 days.
+            </p>
+            <p className="text-xl md:text-2xl font-bold text-yellow-400 mb-8">
+              Limited to 20 clients per month only.
+            </p>
+          </FadeUp>
+
+          <SlideUp delay={0.2}>
+            <a
+              href="#get-started"
+              className="inline-block bg-green-600 text-white font-bold text-lg px-8 py-4 rounded-lg hover:bg-green-700 transition-colors shadow-lg"
+            >
+              Fill the Form to Book Your Free Call
+            </a>
+          </SlideUp>
+        </div>
+      </section>
+    </main>
   );
 }
