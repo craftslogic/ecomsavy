@@ -176,39 +176,6 @@ export function SchedulingFormWrapper() {
 
   return (
     <div className="w-full">
-      {/* Progress Indicator */}
-      {currentStep < 3 && (
-        <div className="max-w-2xl mx-auto mb-12">
-          <div className="flex items-center justify-between">
-            {[1, 2].map((step) => (
-              <div key={step} className="flex items-center flex-1">
-                <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${
-                    currentStep >= step
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-200 dark:bg-gray-700 text-gray-500'
-                  } transition-all`}
-                >
-                  {step}
-                </div>
-                {step < 2 && (
-                  <div
-                    className={`flex-1 h-1 mx-2 ${
-                      currentStep > step
-                        ? 'bg-blue-600'
-                        : 'bg-gray-200 dark:bg-gray-700'
-                    } transition-all`}
-                  />
-                )}
-              </div>
-            ))}
-          </div>
-          <div className="flex justify-between mt-2 text-xs text-gray-600 dark:text-gray-400">
-            <span>Your Details</span>
-            <span>Qualification & Schedule</span>
-          </div>
-        </div>
-      )}
 
       {/* Step Content */}
       <div className="mt-8">

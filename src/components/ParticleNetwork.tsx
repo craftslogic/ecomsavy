@@ -38,9 +38,9 @@ export function ParticleNetwork() {
 
     // Reduce particle count on mobile for better performance
     const isMobile = window.innerWidth < 768;
-    const PARTICLE_COUNT = isMobile ? 80 : 220;
-    const CONNECTION_DISTANCE = isMobile ? 120 : 180;
-    const MOUSE_DISTANCE = isMobile ? 100 : 140;
+    const PARTICLE_COUNT = isMobile ? 100 : 250;
+    const CONNECTION_DISTANCE = isMobile ? 140 : 200;
+    const MOUSE_DISTANCE = isMobile ? 120 : 160;
 
     const resize = () => {
       const dpr = window.devicePixelRatio || 1;
@@ -58,9 +58,9 @@ export function ParticleNetwork() {
       particlesRef.current = Array.from({ length: PARTICLE_COUNT }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: (Math.random() - 0.5) * 0.3,
-        radius: Math.random() * 1.2 + 1.2,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        radius: Math.random() * 1.5 + 1.8,
       }));
     };
 
@@ -105,11 +105,14 @@ export function ParticleNetwork() {
         if (p.y < 0) p.y = height;
         if (p.y > height) p.y = 0;
 
-        // Draw particle
-        ctx.fillStyle = "rgba(22, 163, 74, 0.6)";
+        // Draw particle with glow effect
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = "rgba(22, 163, 74, 0.8)";
+        ctx.fillStyle = "rgba(22, 163, 74, 0.9)";
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
         ctx.fill();
+        ctx.shadowBlur = 0;
       });
 
       // Draw connections
@@ -120,9 +123,9 @@ export function ParticleNetwork() {
           const dist = Math.hypot(dx, dy);
 
           if (dist < CONNECTION_DISTANCE) {
-            const opacity = (1 - dist / CONNECTION_DISTANCE) * 0.5;
+            const opacity = (1 - dist / CONNECTION_DISTANCE) * 0.7;
             ctx.strokeStyle = `rgba(22, 163, 74, ${opacity})`;
-            ctx.lineWidth = 1;
+            ctx.lineWidth = 1.5;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);

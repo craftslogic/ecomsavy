@@ -152,13 +152,6 @@ export function Step2QualificationAndCalendar({
 
   return (
     <div className="max-w-4xl mx-auto">
-      <div className="mb-8 text-center">
-        <h2 className="text-3xl font-bold mb-2">Complete Your Booking</h2>
-        <p className="text-gray-600 dark:text-gray-400">
-          Answer a few questions and select your preferred time
-        </p>
-        <div className="mt-4 text-sm text-gray-500">Step 2 of 2</div>
-      </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Contact Information - Editable Fields */}
