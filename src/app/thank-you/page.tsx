@@ -123,7 +123,7 @@ export default function ThankYouPage() {
   }
 
   return (
-    <main className="relative w-full min-h-screen overflow-x-hidden pt-24 md:pt-28 pb-12 px-4">
+    <main className="relative w-full min-h-screen overflow-x-hidden pt-24 md:pt-28 pb-12 px-4 bg-white">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
@@ -134,7 +134,7 @@ export default function ThankYouPage() {
           </p>
         </div>
 
-        <div className="bg-white border-2 border-green-600 rounded-xl shadow-lg p-6 md:p-8">
+        <div className="bg-green-50 border-2 border-green-600 rounded-xl shadow-lg p-6 md:p-8">
           <Step2QualificationAndCalendar
             onNext={handleQualificationAndSlotSelection}
             onBack={handleBack}

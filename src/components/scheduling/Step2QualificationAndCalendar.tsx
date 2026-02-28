@@ -155,7 +155,7 @@ export function Step2QualificationAndCalendar({
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Contact Information - Editable Fields */}
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
+        <div className=" p-6 rounded-xl border border-gray-200 dark:border-gray-700">
           <h3 className="text-lg font-semibold mb-4">
             Your Contact Information <span className="text-red-500">*</span>
           </h3>
@@ -211,7 +211,7 @@ export function Step2QualificationAndCalendar({
         </div>
 
         {/* Question 1: Business Timeline */}
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
+        <div className=" p-6 rounded-xl border border-gray-200 dark:border-gray-700">
           <label className="block text-lg font-semibold mb-4">
             How soon are you willing to open your Ecommerce business?{' '}
             <span className="text-red-500">*</span>
@@ -246,7 +246,7 @@ export function Step2QualificationAndCalendar({
         </div>
 
         {/* Question 2: Investment Ready */}
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
+        <div className=" p-6 rounded-xl border border-gray-200 dark:border-gray-700">
           <label className="block text-lg font-semibold mb-4">
             Do you have investment ready to launch your brand?{' '}
             <span className="text-red-500">*</span>
@@ -287,7 +287,7 @@ export function Step2QualificationAndCalendar({
         </div>
 
         {/* Question 3: Category Interest */}
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
+        <div className=" p-6 rounded-xl border border-gray-200 dark:border-gray-700">
           <label className="block text-lg font-semibold mb-4">
             What category are you interested in?{' '}
             <span className="text-red-500">*</span>
@@ -322,7 +322,7 @@ export function Step2QualificationAndCalendar({
         </div>
 
         {/* Calendar and Time Selection - Column Layout */}
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700">
+        <div className=" p-6 rounded-xl border border-gray-200 dark:border-gray-700">
           <h3 className="text-lg font-semibold mb-6">
             Select Your Meeting Time <span className="text-red-500">*</span>
           </h3>
@@ -458,7 +458,7 @@ export function Step2QualificationAndCalendar({
 
         {/* Selected Slot Summary */}
         {selectedSlot && selectedDate && (
-          <div className="p-4 bg-green-50 dark:bg-green-900/20 border-2 border-green-200 dark:border-green-800 rounded-lg">
+          <div className="p-4 bg-green-50 border-2 border-green-200 dark:border-green-800 rounded-lg">
             <div className="flex items-center gap-3">
               <CheckCircle2 className="w-6 h-6 text-green-600" />
               <div>

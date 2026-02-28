@@ -135,15 +135,12 @@ export default function ScheduleAMeetPage() {
                   <h2 className="text-2xl lg:text-3xl font-bold text-green-600 mb-2">
                     Our Success Story:
                   </h2>
-                  <h3 className="text-2xl lg:text-3xl font-bold text-green-600">
-                    Ecomsavy
-                  </h3>
                 </div>
 
                 {/* Description */}
                 <p className="text-base text-gray-700 mb-10 leading-relaxed">
-                  Starting with the same proven system, Ecomsavy has grown into
-                  Pakistan's leading online perfume brand, consistently
+                  Starting with the same proven system, this brand has grown into
+                  Pakistan's leading online skincare brand, consistently
                   achieving 250+ orders daily and generating millions in
                   revenue.
                 </p>
@@ -186,7 +183,7 @@ export default function ScheduleAMeetPage() {
                 {/* Quote */}
                 <div className="border-l-4 border-green-600 pl-4 mt-4">
                   <p className="text-base italic text-gray-700 leading-relaxed">
-                    "The same proven system that built Elyscents can build your
+                    "The same proven system that built this brand can build your
                     brand. We know what works because we've done it ourselves."
                   </p>
                 </div>
@@ -209,7 +206,7 @@ export default function ScheduleAMeetPage() {
                       From Startup to Market Leader
                     </h4>
                     <p className="text-sm text-gray-700 leading-relaxed">
-                      The exact blueprint we used for Elyscents is now available
+                      The exact blueprint we used for this brand is now available
                       for your brand.
                     </p>
                   </div>
@@ -241,7 +238,7 @@ export default function ScheduleAMeetPage() {
                     Starter Package
                   </h3>
 
-                  <div className="space-y-4 mb-6 flex-grow">
+                  <div className="space-y-4 mb-6 grow">
                     <div>
                       <p className="text-white text-base font-semibold mb-1">
                         Service Charges:{" "}
@@ -280,7 +277,7 @@ export default function ScheduleAMeetPage() {
                     Growth Package
                   </h3>
 
-                  <div className="space-y-4 mb-6 flex-grow">
+                  <div className="space-y-4 mb-6 grow">
                     <div>
                       <p className="text-white text-base font-semibold mb-1">
                         Service Charges:{" "}

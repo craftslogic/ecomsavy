@@ -50,7 +50,7 @@ export default function BookingConfirmationPage() {
   }
 
   return (
-    <main className="relative w-full min-h-screen overflow-x-hidden pt-24 md:pt-28 pb-12 px-4">
+    <main className="relative w-full min-h-screen overflow-x-hidden pt-24 md:pt-28 pb-12 px-4  bg-white">
       <div className="max-w-4xl mx-auto">
         <Step4Confirmation bookingData={bookingData} onReset={handleReset} />
       </div>
