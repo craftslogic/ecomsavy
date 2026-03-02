@@ -27,7 +27,7 @@ export const qualificationSchema = z.object({
   investment_ready: z.enum(['yes', 'no'], {
     required_error: 'Please specify if you have investment ready',
   }),
-  category_interest: z.enum(['skincare', 'perfume', 'gadgets'], {
+  category_interest: z.enum(['skin_care', 'beard_oil', 'toys', 'home_kitchen'], {
     required_error: 'Please select a category',
   }),
 });
@@ -55,7 +55,7 @@ export const qualificationWithContactSchema = z.object({
   investment_ready: z.enum(['yes', 'no'], {
     required_error: 'Please specify if you have investment ready',
   }),
-  category_interest: z.enum(['skincare', 'perfume', 'gadgets'], {
+  category_interest: z.enum(['skin_care', 'beard_oil', 'toys', 'home_kitchen'], {
     required_error: 'Please select a category',
   }),
 });

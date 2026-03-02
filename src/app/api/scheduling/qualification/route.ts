@@ -6,7 +6,7 @@ const qualificationInputSchema = z.object({
   lead_id: z.string().uuid(),
   business_timeline: z.enum(['now', 'later', 'never']),
   investment_ready: z.boolean(),
-  category_interest: z.enum(['skincare', 'perfume', 'gadgets']),
+  category_interest: z.enum(['skin_care', 'beard_oil', 'toys', 'home_kitchen']),
 });
 
 /**

@@ -30,7 +30,7 @@ CREATE TABLE qualification_responses (
     -- Question answers
     business_timeline VARCHAR(50) NOT NULL CHECK (business_timeline IN ('now', 'later', 'never')),
     investment_ready BOOLEAN NOT NULL,
-    category_interest VARCHAR(50) NOT NULL CHECK (category_interest IN ('skincare', 'perfume', 'gadgets')),
+    category_interest VARCHAR(50) NOT NULL CHECK (category_interest IN ('skin_care', 'beard_oil', 'toys', 'home_kitchen')),
     
     created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc', NOW()),
     

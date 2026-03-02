@@ -14,7 +14,7 @@ export interface QualificationResponse {
   lead_id: string;
   business_timeline: 'now' | 'later' | 'never';
   investment_ready: boolean;
-  category_interest: 'skincare' | 'perfume' | 'gadgets';
+  category_interest: 'skin_care' | 'beard_oil' | 'toys' | 'home_kitchen';
   created_at: string;
 }
 
@@ -53,7 +53,7 @@ export interface LeadCaptureFormData {
 export interface QualificationFormData {
   business_timeline: 'now' | 'later' | 'never';
   investment_ready: 'yes' | 'no';
-  category_interest: 'skincare' | 'perfume' | 'gadgets';
+  category_interest: 'skin_care' | 'beard_oil' | 'toys' | 'home_kitchen';
 }
 
 export interface QualificationWithContactFormData {
@@ -62,7 +62,7 @@ export interface QualificationWithContactFormData {
   phone: string;
   business_timeline: 'now' | 'later' | 'never';
   investment_ready: 'yes' | 'no';
-  category_interest: 'skincare' | 'perfume' | 'gadgets';
+  category_interest: 'skin_care' | 'beard_oil' | 'toys' | 'home_kitchen';
 }
 
 export interface SlotSelectionFormData {

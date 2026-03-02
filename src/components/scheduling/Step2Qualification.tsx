@@ -113,9 +113,10 @@ export function Step2Qualification({ onNext, onBack, initialData }: Step2Qualifi
           </label>
           <div className="space-y-3">
             {[
-              { value: 'skincare', label: 'SkinCare' },
-              { value: 'perfume', label: 'Perfume' },
-              { value: 'gadgets', label: 'Gadgets ( Chinese Products )' },
+              { value: 'skin_care', label: 'Skin Care' },
+              { value: 'beard_oil', label: 'Beard Oil' },
+              { value: 'toys', label: 'Toys' },
+              { value: 'home_kitchen', label: 'Home & Kitchen' },
             ].map((option) => (
               <label
                 key={option.value}

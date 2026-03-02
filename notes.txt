@@ -1,1 +1,0 @@
-supabase ecomsavy db pass: lkjhasdf*877
