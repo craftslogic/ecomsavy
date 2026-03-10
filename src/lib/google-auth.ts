@@ -5,6 +5,27 @@ import { JWT } from 'google-auth-library';
 let authClient: JWT | null = null;
 
 /**
+ * Parse service account key - handles both plain JSON and base64-encoded JSON
+ */
+function parseServiceAccountKey(key: string) {
+  try {
+    // Try to parse as JSON directly first
+    return JSON.parse(key);
+  } catch (e) {
+    // If that fails, try base64 decoding first
+    try {
+      const decoded = Buffer.from(key, 'base64').toString('utf-8');
+      return JSON.parse(decoded);
+    } catch (decodeError) {
+      throw new Error(
+        '❌ Failed to parse GOOGLE_SERVICE_ACCOUNT_KEY. ' +
+        'Make sure it contains either valid JSON or base64-encoded JSON from your service account key file.'
+      );
+    }
+  }
+}
+
+/**
  * Get Google Service Account authentication client
  * This is used for both Calendar and Sheets APIs
  */
@@ -25,14 +46,14 @@ export async function getGoogleAuth(): Promise<JWT> {
       );
     }
 
-    // Parse the service account key
+    // Parse the service account key (supports both JSON and base64-encoded JSON)
     let credentials;
     try {
-      credentials = JSON.parse(serviceAccountKey);
+      credentials = parseServiceAccountKey(serviceAccountKey);
     } catch (parseError) {
       throw new Error(
         '❌ Failed to parse GOOGLE_SERVICE_ACCOUNT_KEY. ' +
-        'Make sure it contains valid JSON from your service account key file.'
+        'Make sure it contains valid JSON or base64-encoded JSON from your service account key file.'
       );
     }
 
