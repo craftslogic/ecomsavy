@@ -1,29 +1,10 @@
 import { google } from 'googleapis';
+import { getGoogleAuth } from './google-auth';
 
-// Validate environment variables
-if (!process.env.GOOGLE_CLIENT_ID) {
-  console.error('❌ GOOGLE_CLIENT_ID is not set in environment variables');
-}
-if (!process.env.GOOGLE_CLIENT_SECRET) {
-  console.error('❌ GOOGLE_CLIENT_SECRET is not set in environment variables');
-}
-if (!process.env.GOOGLE_REFRESH_TOKEN) {
-  console.error('❌ GOOGLE_REFRESH_TOKEN is not set in environment variables');
-}
-
-// Google Calendar configuration
-const oauth2Client = new google.auth.OAuth2(
-  process.env.GOOGLE_CLIENT_ID,
-  process.env.GOOGLE_CLIENT_SECRET,
-  process.env.NEXT_PUBLIC_APP_URL + '/api/auth/google/callback'
-);
-
-// Set credentials with refresh token
-oauth2Client.setCredentials({
-  refresh_token: process.env.GOOGLE_REFRESH_TOKEN,
-});
-
-const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
+/**
+ * Google Calendar integration using Service Account authentication
+ * No OAuth required - uses service account JSON credentials
+ */
 
 interface CreateMeetingParams {
   summary: string;
@@ -47,6 +28,17 @@ export async function createGoogleMeetEvent(
   params: CreateMeetingParams
 ): Promise<MeetingResponse> {
   try {
+    const auth = await getGoogleAuth();
+    const calendar = google.calendar({ version: 'v3', auth });
+
+    const calendarId = process.env.GOOGLE_CALENDAR_ID;
+    
+    if (!calendarId) {
+      throw new Error(
+        '❌ GOOGLE_CALENDAR_ID is not set. Please configure the calendar ID in environment variables.'
+      );
+    }
+
     const event = {
       summary: params.summary,
       description: params.description,
@@ -86,7 +78,7 @@ export async function createGoogleMeetEvent(
     };
 
     const response = await calendar.events.insert({
-      calendarId: process.env.GOOGLE_CALENDAR_ID || 'primary',
+      calendarId,
       requestBody: event,
       conferenceDataVersion: 1,
       sendUpdates: 'all', // Send email notifications to attendees
@@ -96,13 +88,15 @@ export async function createGoogleMeetEvent(
       throw new Error('Failed to create event or generate Meet link');
     }
 
+    console.log('✅ Calendar event created:', response.data.id);
+
     return {
       event_id: response.data.id,
       meet_link: response.data.hangoutLink,
       html_link: response.data.htmlLink || '',
     };
   } catch (error: any) {
-    console.error('Error creating Google Calendar event:', error);
+    console.error('❌ Error creating Google Calendar event:', error);
     console.error('Error details:', {
       message: error?.message,
       code: error?.code,
@@ -112,12 +106,14 @@ export async function createGoogleMeetEvent(
     
     let errorMessage = 'Unknown error';
     
-    if (error?.message === 'unauthorized_client') {
-      errorMessage = 'Google OAuth credentials are invalid. Please regenerate your refresh token with correct scopes.';
-    } else if (error?.code === 401) {
-      errorMessage = 'Google authentication failed. Your refresh token may be expired or invalid.';
+    if (error?.code === 401) {
+      errorMessage = 'Google authentication failed. Check your service account credentials.';
     } else if (error?.code === 403) {
-      errorMessage = 'Permission denied. Make sure Google Calendar API is enabled in Google Cloud Console.';
+      errorMessage = 'Permission denied. Make sure:\n' +
+        '  1. Google Calendar API is enabled in Google Cloud Console\n' +
+        '  2. The calendar is shared with the service account email';
+    } else if (error?.code === 404) {
+      errorMessage = 'Calendar not found. Verify GOOGLE_CALENDAR_ID is correct and shared with the service account.';
     } else if (error?.message) {
       errorMessage = error.message;
     }
@@ -131,15 +127,25 @@ export async function createGoogleMeetEvent(
  */
 export async function cancelGoogleMeetEvent(eventId: string): Promise<boolean> {
   try {
+    const auth = await getGoogleAuth();
+    const calendar = google.calendar({ version: 'v3', auth });
+
+    const calendarId = process.env.GOOGLE_CALENDAR_ID;
+    
+    if (!calendarId) {
+      throw new Error('GOOGLE_CALENDAR_ID is not set');
+    }
+
     await calendar.events.delete({
-      calendarId: process.env.GOOGLE_CALENDAR_ID || 'primary',
+      calendarId,
       eventId: eventId,
       sendUpdates: 'all', // Notify attendees
     });
 
+    console.log('✅ Calendar event canceled:', eventId);
     return true;
   } catch (error) {
-    console.error('Error canceling Google Calendar event:', error);
+    console.error('❌ Error canceling Google Calendar event:', error);
     throw new Error(
       `Failed to cancel event: ${error instanceof Error ? error.message : 'Unknown error'}`
     );
@@ -154,6 +160,15 @@ export async function updateGoogleMeetEvent(
   updates: Partial<CreateMeetingParams>
 ): Promise<MeetingResponse> {
   try {
+    const auth = await getGoogleAuth();
+    const calendar = google.calendar({ version: 'v3', auth });
+
+    const calendarId = process.env.GOOGLE_CALENDAR_ID;
+    
+    if (!calendarId) {
+      throw new Error('GOOGLE_CALENDAR_ID is not set');
+    }
+
     const event: any = {};
 
     if (updates.summary) event.summary = updates.summary;
@@ -172,7 +187,7 @@ export async function updateGoogleMeetEvent(
     }
 
     const response = await calendar.events.patch({
-      calendarId: process.env.GOOGLE_CALENDAR_ID || 'primary',
+      calendarId,
       eventId: eventId,
       requestBody: event,
       sendUpdates: 'all',
@@ -182,13 +197,15 @@ export async function updateGoogleMeetEvent(
       throw new Error('Failed to update event');
     }
 
+    console.log('✅ Calendar event updated:', response.data.id);
+
     return {
       event_id: response.data.id,
       meet_link: response.data.hangoutLink,
       html_link: response.data.htmlLink || '',
     };
   } catch (error) {
-    console.error('Error updating Google Calendar event:', error);
+    console.error('❌ Error updating Google Calendar event:', error);
     throw new Error(
       `Failed to update event: ${error instanceof Error ? error.message : 'Unknown error'}`
     );
@@ -200,14 +217,23 @@ export async function updateGoogleMeetEvent(
  */
 export async function getGoogleMeetEvent(eventId: string) {
   try {
+    const auth = await getGoogleAuth();
+    const calendar = google.calendar({ version: 'v3', auth });
+
+    const calendarId = process.env.GOOGLE_CALENDAR_ID;
+    
+    if (!calendarId) {
+      throw new Error('GOOGLE_CALENDAR_ID is not set');
+    }
+
     const response = await calendar.events.get({
-      calendarId: process.env.GOOGLE_CALENDAR_ID || 'primary',
+      calendarId,
       eventId: eventId,
     });
 
     return response.data;
   } catch (error) {
-    console.error('Error getting Google Calendar event:', error);
+    console.error('❌ Error getting Google Calendar event:', error);
     throw new Error(
       `Failed to get event: ${error instanceof Error ? error.message : 'Unknown error'}`
     );

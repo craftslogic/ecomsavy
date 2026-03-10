@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase';
 import { createGoogleMeetEvent } from '@/lib/google-calendar';
+import { logBookingToSheet } from '@/lib/google-sheets';
 import { sendClientConfirmationEmail, sendAdminNotificationEmail } from '@/lib/email';
 import { z } from 'zod';
 import { format, parseISO } from 'date-fns';
@@ -203,6 +204,26 @@ export async function POST(request: NextRequest) {
     } catch (emailError) {
       console.error('Error sending admin notification email:', emailError);
       // Don't fail the booking if email fails, just log it
+    }
+
+    // Log booking to Google Sheets
+    try {
+      await logBookingToSheet({
+        name: leadData.full_name,
+        email: leadData.email,
+        phone: leadData.phone,
+        businessTimeline: qualificationData.business_timeline,
+        investmentReady: qualificationData.investment_ready,
+        categoryInterest: qualificationData.category_interest,
+        meetingDate: meetingDate,
+        meetingTime: meetingTime,
+        meetLink: googleEvent.meet_link,
+        timestamp: new Date().toISOString(),
+      });
+      console.log('✅ Booking data logged to Google Sheets');
+    } catch (sheetError) {
+      console.error('Error logging to Google Sheets:', sheetError);
+      // Don't fail the booking if sheet logging fails, just log it
     }
 
     // Return success response
