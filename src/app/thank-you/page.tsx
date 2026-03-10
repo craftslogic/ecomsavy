@@ -130,7 +130,7 @@ export default function ThankYouPage() {
             Book Your 1-on-1 Brand Strategy Call
           </h1>
           <p className="text-lg md:text-xl text-gray-700">
-            Get personalized guidance from the Elevate51 team and discover how to launch your ecommerce brand in 30–60 days.
+            Get personalized guidance from the Ecomsavy team and discover how to launch your ecommerce brand in 30–60 days.
           </p>
         </div>
 

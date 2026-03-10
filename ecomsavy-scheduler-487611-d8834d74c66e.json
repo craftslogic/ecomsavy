@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "ecomsavy-scheduler-487611",
+  "private_key_id": "d8834d74c66ee3f93a0b3786bf90695566f76e9c",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDbJBRCA0YWp+O5\nq9zsUAlZTeFvQrr9NNKkxriJdhWSelGUpdf77XOWgUZZYw0KpHXDA+aBDbfW0REz\nlnI+aw+Fyuj9H4O1M11ipZ1HkAXsIzAq5XGSc+iwrWYfyQMDFWZSy+ZQv0pOLhpY\n1tv+sR6NlHzfB9ZliIJhvIdMvGc+WmTW1h/t6MKPQrOpUcRwnrgFVeYTJVIk4O0b\na3SBHOa1aLUGrBp4c9pTYrVMGR7RWuIDEqY217xeZs1BDE9tZBzEQIdbC7xfytXV\nmhBdrBIJ25C7xrLlHNvKsD2JT6XnR8bdWt4YBpotZSxIEPIzzwVCtF7E2orlgyuF\n4HO1s5zfAgMBAAECggEAJHeaj2mwDjEeKlW5S/H9vEjDjRpTt7NEonsXVni6GkgU\nr2Hx0VCwfYlBxbo//1di6XMKtssrnqnn7OfKVyzFxoP/xa+q4UqM7c+VnsUO1z77\n0wefoLl9LXmNlxiCUc8L2hdoWmOa3+u4IrSOo5Gh/fmJ1iuduAPBfrY65cAshimB\n6TnJgKT/h7xZSPse1MqJGbABjz2YVcdr1Rvx9Cl+y1SwkxGJ0duQblgvoIv8O4OM\n+ZvSlJ4bV9+Uh4FXSY0O97LOAjr3z8VGP+aQiomkRQBhGyoTp2e6nXqJAXiVufee\nVl/PtMI5OfPdNAN8mdLD/rePO/oyNlax4l+krJ5qIQKBgQDx3hvTDFpeHSLQatAR\nWDV0thwljfCU0J4jwXgPefBqlIjTTFM9hxnmKy4r5Cj8ZsgZWabnl6cEWeGZ1Wzg\ndF2RmmN1A5jMZ25QyXk/moIrTjyL9bRVF05xDUBngpe+7SALLIUe8+pzvXY7t+Vj\nOrRfRLkduURmcvrVrWMgm5iA+QKBgQDn8gV94huajtvWiZCWCZdF7ul9r55hJAFm\nJAOpARVpYJfeKmf1gpJgdw+jKZocIyAs9aS7v20v33Uuv0jkaYxsWUj2PkM9Fg2a\nGU0TZpSjlYg/O6UyP+awGUjP4EdX0uxWqWn0jY3C5/9MBKDpIHXSsox2DxLsDUtY\nrzAGnqhalwKBgQC/3ylHlacivg5eND33ZHiTq9xMVnuiMpUhXFt4O43jnw2kQgpO\n5xw+ocaw/wEcqhTXN23Wj1Hpe7wio1MKBIYt+cIok7/ld6/l2s6bDGFzJU+W4EY8\nso6B1Ldg5hKnXclr09ePJIS7aHOhEFOjEnEAmq4XzF9cvp4KYNAgkA69UQKBgD4j\nCy+XJFf6j5Bg2Bgpx5nXkDu4kZBqieloGobrIGZTlzvQVntiGH65RroqSfvhuRvy\nTshxVvntPkJgwlFWqWTZYn99XJv/zXML9icNYyKTy6VNAEt+7PkePPBboCE6A1CQ\nIC+AwIqHhlBCKS1rIcVpSdHS5fnQ8e93N0F+vZFPAoGBAJu4swjajzu9Ut2vkHqk\nuiDODgmf64urohBxwEHuG629BVrZM7tTosRb6qEzn4+nggMJQkG6s9awn01WBM4q\nCWThlFDfW51hkYZoFQX2oo7MrUW33XMaDrqWrIZgE8JzE//NMUz30exacPjqovZc\n9hQpegK8ZCezi14/H/lGbffz\n-----END PRIVATE KEY-----\n",
+  "client_email": "ecomsavy-automation@ecomsavy-scheduler-487611.iam.gserviceaccount.com",
+  "client_id": "103395592743927148935",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/ecomsavy-automation%40ecomsavy-scheduler-487611.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

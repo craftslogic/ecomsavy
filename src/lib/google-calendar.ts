@@ -31,17 +31,14 @@ export async function createGoogleMeetEvent(
     const auth = await getGoogleAuth();
     const calendar = google.calendar({ version: 'v3', auth });
 
-    const calendarId = process.env.GOOGLE_CALENDAR_ID;
+    const calendarId = process.env.GOOGLE_CALENDAR_ID || 'primary';
     
-    if (!calendarId) {
-      throw new Error(
-        '❌ GOOGLE_CALENDAR_ID is not set. Please configure the calendar ID in environment variables.'
-      );
-    }
+    console.log('📅 Using calendar:', calendarId === 'primary' ? 'Service Account Primary Calendar' : calendarId);
 
-    const event = {
+    // Build event object
+    const event: any = {
       summary: params.summary,
-      description: params.description,
+      description: `${params.description}\n\n---\nAttendee: ${params.attendeeName} (${params.attendeeEmail})`,
       start: {
         dateTime: params.startDateTime,
         timeZone: 'UTC',
@@ -50,26 +47,11 @@ export async function createGoogleMeetEvent(
         dateTime: params.endDateTime,
         timeZone: 'UTC',
       },
-      attendees: [
-        {
-          email: params.attendeeEmail,
-          displayName: params.attendeeName,
-          responseStatus: 'needsAction',
-        },
-      ],
-      conferenceData: {
-        createRequest: {
-          requestId: `meet-${Date.now()}`,
-          conferenceSolutionKey: {
-            type: 'hangoutsMeet',
-          },
-        },
-      },
       reminders: {
         useDefault: false,
         overrides: [
-          { method: 'email', minutes: 24 * 60 }, // 1 day before
-          { method: 'popup', minutes: 30 }, // 30 minutes before
+          { method: 'email', minutes: 24 * 60 },
+          { method: 'popup', minutes: 30 },
         ],
       },
       guestsCanModify: false,
@@ -77,21 +59,86 @@ export async function createGoogleMeetEvent(
       guestsCanSeeOtherGuests: false,
     };
 
-    const response = await calendar.events.insert({
-      calendarId,
-      requestBody: event,
-      conferenceDataVersion: 1,
-      sendUpdates: 'all', // Send email notifications to attendees
-    });
+    // Try to add Google Meet conference data
+    // Note: This works on service account's own calendar or Google Workspace calendars
+    // For personal Gmail calendars, this may fail - we'll handle it gracefully
+    event.conferenceData = {
+      createRequest: {
+        requestId: `meet-${Date.now()}`,
+        conferenceSolutionKey: {
+          type: 'hangoutsMeet',
+        },
+      },
+    };
 
-    if (!response.data.id || !response.data.hangoutLink) {
-      throw new Error('Failed to create event or generate Meet link');
+    let response;
+    try {
+      // First attempt: Try to create with Google Meet
+      response = await calendar.events.insert({
+        calendarId,
+        requestBody: event,
+        conferenceDataVersion: 1,
+        sendUpdates: 'none',
+      });
+
+      if (response.data.id && response.data.hangoutLink) {
+        console.log('✅ Calendar event created with Google Meet:', response.data.id);
+        return {
+          event_id: response.data.id,
+          meet_link: response.data.hangoutLink,
+          html_link: response.data.htmlLink || '',
+        };
+      }
+    } catch (meetError: any) {
+      // If Google Meet creation fails, try without it
+      console.warn('⚠️  Google Meet creation failed, attempting without conference data...');
+      console.warn('   Error:', meetError?.message);
+      
+      // Remove conference data and try again
+      delete event.conferenceData;
+      
+      response = await calendar.events.insert({
+        calendarId,
+        requestBody: event,
+        sendUpdates: 'none',
+      });
+    }
+
+    // If we reach here without a Meet link, use a fallback
+    if (!response.data.hangoutLink) {
+      console.warn('⚠️  Event created without Google Meet link');
+      console.warn('   To enable automatic Google Meet creation:');
+      console.warn('   1. Set GOOGLE_CALENDAR_ID=primary in .env (use service account\'s calendar)');
+      console.warn('   2. OR upgrade to Google Workspace with domain-wide delegation');
+      console.warn('   3. OR set GOOGLE_MEET_LINK in .env to use a permanent meeting room');
+      
+      // Use a permanent Meet link if configured, otherwise throw error
+      const fallbackMeetLink = process.env.GOOGLE_MEET_LINK;
+      
+      if (!fallbackMeetLink) {
+        throw new Error(
+          'Google Meet link could not be generated automatically. ' +
+          'Service accounts cannot create Meet links on personal Gmail calendars. ' +
+          'Solutions:\n' +
+          '  1. Set GOOGLE_CALENDAR_ID=primary to use service account\'s own calendar\n' +
+          '  2. Set GOOGLE_MEET_LINK=your-permanent-meet-link in .env\n' +
+          '  3. Upgrade to Google Workspace and configure domain-wide delegation'
+        );
+      }
+      
+      console.log('   Using configured fallback Meet link');
+      
+      return {
+        event_id: response.data.id!,
+        meet_link: fallbackMeetLink,
+        html_link: response.data.htmlLink || '',
+      };
     }
 
     console.log('✅ Calendar event created:', response.data.id);
 
     return {
-      event_id: response.data.id,
+      event_id: response.data.id!,
       meet_link: response.data.hangoutLink,
       html_link: response.data.htmlLink || '',
     };
