@@ -252,14 +252,14 @@ export default function ScheduleAMeetPage() {
                       <p className="text-white text-base font-semibold mb-1">
                         Product Cost:{" "}
                         <span className="text-white font-bold text-xl">
-                          Rs. 70,000
+                          Rs. 35,000
                         </span>
                       </p>
                     </div>
 
                     <div>
                       <p className="text-yellow-400 text-sm font-medium">
-                        100 serums @ Rs. 700 each
+                        100 serums @ Rs. 350 each
                       </p>
                     </div>
                   </div>

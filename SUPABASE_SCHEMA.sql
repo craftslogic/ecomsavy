@@ -253,24 +253,19 @@ BEGIN
     FOR v_day IN 1..7 LOOP
         v_date := CURRENT_DATE + v_day;
         
-        -- Only add slots for weekdays
-        IF EXTRACT(DOW FROM v_date) BETWEEN 1 AND 5 THEN
-            -- Morning slots (10:00 AM - 1:00 PM)
+        -- Only add slots for Monday-Saturday
+        IF EXTRACT(DOW FROM v_date) BETWEEN 1 AND 6 THEN
+            -- Morning slots (11:00 AM - 1:00 PM)
             INSERT INTO available_slots (slot_date, start_time, end_time) VALUES
-                (v_date, '10:00:00', '10:30:00'),
-                (v_date, '10:30:00', '11:00:00'),
-                (v_date, '11:00:00', '11:30:00'),
-                (v_date, '11:30:00', '12:00:00'),
-                (v_date, '12:00:00', '12:30:00'),
-                (v_date, '12:30:00', '13:00:00');
+                (v_date, '11:00:00', '12:00:00'),
+                (v_date, '12:00:00', '13:00:00');
             
-            -- Afternoon slots (2:00 PM - 4:30 PM) - Break from 1 PM to 2 PM
+            -- Afternoon slots (2:00 PM - 6:00 PM) - Break from 1 PM to 2 PM
             INSERT INTO available_slots (slot_date, start_time, end_time) VALUES
-                (v_date, '14:00:00', '14:30:00'),
-                (v_date, '14:30:00', '15:00:00'),
-                (v_date, '15:00:00', '15:30:00'),
-                (v_date, '15:30:00', '16:00:00'),
-                (v_date, '16:00:00', '16:30:00');
+                (v_date, '14:00:00', '15:00:00'),
+                (v_date, '15:00:00', '16:00:00'),
+                (v_date, '16:00:00', '17:00:00'),
+                (v_date, '17:00:00', '18:00:00');
         END IF;
     END LOOP;
 END $$;

@@ -236,6 +236,9 @@ export function Step3CalendarSelection({ onNext, onBack }: Step3CalendarSelectio
               <Calendar className="w-4 h-4" />
               Bookings are available from the day after tomorrow onwards
             </p>
+            <p className="mt-2">
+              60-minute slots: 11-12, 12-1, break 1-2, then 2-3, 3-4, 4-5, and 5-6.
+            </p>
           </div>
         </div>
 
