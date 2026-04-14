@@ -396,7 +396,7 @@ export default function ScheduleAMeetPage() {
                         Product Cost (Serum)
                       </td>
                       <td className="p-2 md:p-3 text-center text-sm">
-                        Rs. 700 each
+                        Rs. 350 each
                       </td>
                       <td className="p-2 md:p-3 text-center text-sm">
                         Variable pricing
