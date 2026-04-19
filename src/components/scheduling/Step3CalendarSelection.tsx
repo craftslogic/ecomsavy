@@ -7,6 +7,26 @@ import { Button } from '@/components/ui/button';
 import type { AvailableSlot } from '@/types/scheduling';
 import { Calendar, Clock, CheckCircle2, XCircle } from 'lucide-react';
 
+const BOOKABLE_DAY_COUNT = 3;
+
+const getBookableDates = () => {
+  const dates: Date[] = [];
+  let cursor = addDays(startOfDay(new Date()), 2);
+
+  while (dates.length < BOOKABLE_DAY_COUNT) {
+    const dayOfWeek = cursor.getDay();
+    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+
+    if (!isWeekend) {
+      dates.push(cursor);
+    }
+
+    cursor = addDays(cursor, 1);
+  }
+
+  return dates;
+};
+
 interface Step3CalendarSelectionProps {
   onNext: (slotData: {
     slot_id: string;
@@ -18,6 +38,11 @@ interface Step3CalendarSelectionProps {
 }
 
 export function Step3CalendarSelection({ onNext, onBack }: Step3CalendarSelectionProps) {
+  const bookableDates = getBookableDates();
+  const minBookableDate = bookableDates[0];
+  const maxBookableDate = bookableDates[bookableDates.length - 1];
+  const bookableDateKeys = new Set(bookableDates.map((date) => format(date, 'yyyy-MM-dd')));
+
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [availableSlotsForDate, setAvailableSlotsForDate] = useState<AvailableSlot[]>([]);
   const [selectedSlot, setSelectedSlot] = useState<AvailableSlot | null>(null);
@@ -111,16 +136,11 @@ export function Step3CalendarSelection({ onNext, onBack }: Step3CalendarSelectio
     return `${displayHour}:${minutes} ${ampm}`;
   };
 
-  // Disable dates: past dates, today, tomorrow, and dates without slots
+  // Disable dates outside the 3 allowed booking days and dates without slots.
   const disabledDays = (date: Date) => {
-    const today = startOfDay(new Date());
-    const dayAfterTomorrow = startOfDay(addDays(today, 2));
     const formattedDate = format(date, 'yyyy-MM-dd');
-    
-    // Disable if:
-    // 1. Date is before day after tomorrow
-    // 2. Date doesn't have available slots
-    return isBefore(date, dayAfterTomorrow) || !availableDates.has(formattedDate);
+
+    return !bookableDateKeys.has(formattedDate) || !availableDates.has(formattedDate);
   };
 
   if (loadingDates) {
@@ -228,14 +248,11 @@ export function Step3CalendarSelection({ onNext, onBack }: Step3CalendarSelectio
                 day_hidden: 'invisible',
               }}
               showOutsideDays
-              fromDate={addDays(new Date(), 2)}
+              fromDate={minBookableDate}
+              toDate={maxBookableDate}
             />
           </div>
           <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg text-sm text-blue-800 dark:text-blue-300">
-            <p className="flex items-center gap-2">
-              <Calendar className="w-4 h-4" />
-              Bookings are available from the day after tomorrow onwards
-            </p>
             <p className="mt-2">
               60-minute slots: 11-12, 12-1, break 1-2, then 2-3, 3-4, 4-5, and 5-6.
             </p>
