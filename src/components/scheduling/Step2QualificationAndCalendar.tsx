@@ -4,11 +4,31 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { qualificationWithContactSchema, type QualificationWithContactFormData } from '@/lib/validation';
-import { format, addDays, startOfDay, isBefore } from 'date-fns';
+import { format, addDays, startOfDay } from 'date-fns';
 import { DayPicker } from 'react-day-picker';
 import { Button } from '@/components/ui/button';
 import type { AvailableSlot } from '@/types/scheduling';
 import { Calendar, Clock, CheckCircle2, XCircle } from 'lucide-react';
+
+const BOOKABLE_DAY_COUNT = 3;
+
+const getBookableDates = () => {
+  const dates: Date[] = [];
+  let cursor = addDays(startOfDay(new Date()), 2);
+
+  while (dates.length < BOOKABLE_DAY_COUNT) {
+    const dayOfWeek = cursor.getDay();
+    const isSunday = dayOfWeek === 0;
+
+    if (!isSunday) {
+      dates.push(cursor);
+    }
+
+    cursor = addDays(cursor, 1);
+  }
+
+  return dates;
+};
 
 interface Step2QualificationAndCalendarProps {
   onNext: (data: QualificationWithContactFormData & {
@@ -26,6 +46,11 @@ export function Step2QualificationAndCalendar({
   onBack,
   initialData,
 }: Step2QualificationAndCalendarProps) {
+  const bookableDates = getBookableDates();
+  const minBookableDate = bookableDates[0];
+  const maxBookableDate = bookableDates[bookableDates.length - 1];
+  const bookableDateKeys = new Set(bookableDates.map((date) => format(date, 'yyyy-MM-dd')));
+
   const {
     register,
     handleSubmit,
@@ -73,12 +98,8 @@ export function Step2QualificationAndCalendar({
         throw new Error(data.error || 'Failed to fetch available dates');
       }
 
-      // Extract unique dates from available (not booked) slots
-      const dates = new Set<string>(
-        data.data
-          .filter((slot: AvailableSlot) => !slot.is_booked)
-          .map((slot: AvailableSlot) => slot.slot_date as string)
-      );
+      // Extract unique dates from all available slots so booked dates still remain clickable.
+      const dates = new Set<string>(data.data.map((slot: AvailableSlot) => slot.slot_date as string));
       setAvailableDates(dates);
     } catch (err) {
       console.error('Error fetching available dates:', err);
@@ -127,11 +148,9 @@ export function Step2QualificationAndCalendar({
   };
 
   const disabledDays = (date: Date) => {
-    const today = startOfDay(new Date());
-    const dayAfterTomorrow = startOfDay(addDays(today, 2));
     const formattedDate = format(date, 'yyyy-MM-dd');
 
-    return isBefore(date, dayAfterTomorrow) || !availableDates.has(formattedDate);
+    return !bookableDateKeys.has(formattedDate);
   };
 
   const onSubmit = (data: QualificationWithContactFormData) => {
@@ -373,13 +392,14 @@ export function Step2QualificationAndCalendar({
                       day_hidden: 'invisible',
                     }}
                     showOutsideDays
-                    fromDate={addDays(new Date(), 2)}
+                    fromDate={minBookableDate}
+                    toDate={maxBookableDate}
                   />
                 </div>
                 <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg text-sm text-blue-800 dark:text-blue-300">
                   <p className="flex items-center gap-2">
                     <Calendar className="w-4 h-4" />
-                    Bookings are available from the day after tomorrow onwards
+                    Bookings are available only for the next 3 business days from the day after tomorrow
                   </p>
                   <p className="mt-2">
                     60-minute slots: 11-12, 12-1, break 1-2, then 2-3, 3-4, 4-5, and 5-6.

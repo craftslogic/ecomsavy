@@ -10,9 +10,9 @@ const getBookableDates = () => {
 
   while (dates.length < BOOKABLE_DAY_COUNT) {
     const dayOfWeek = cursor.getDay();
-    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+    const isSunday = dayOfWeek === 0;
 
-    if (!isWeekend) {
+    if (!isSunday) {
       dates.push(format(cursor, 'yyyy-MM-dd'));
     }
 

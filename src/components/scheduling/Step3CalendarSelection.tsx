@@ -15,9 +15,9 @@ const getBookableDates = () => {
 
   while (dates.length < BOOKABLE_DAY_COUNT) {
     const dayOfWeek = cursor.getDay();
-    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+    const isSunday = dayOfWeek === 0;
 
-    if (!isWeekend) {
+    if (!isSunday) {
       dates.push(cursor);
     }
 
@@ -136,11 +136,11 @@ export function Step3CalendarSelection({ onNext, onBack }: Step3CalendarSelectio
     return `${displayHour}:${minutes} ${ampm}`;
   };
 
-  // Disable dates outside the 3 allowed booking days and dates without slots.
+  // Disable dates outside the 3 allowed booking days only.
   const disabledDays = (date: Date) => {
     const formattedDate = format(date, 'yyyy-MM-dd');
 
-    return !bookableDateKeys.has(formattedDate) || !availableDates.has(formattedDate);
+    return !bookableDateKeys.has(formattedDate);
   };
 
   if (loadingDates) {
